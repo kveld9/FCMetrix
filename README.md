@@ -1,6 +1,6 @@
 # FCM Calculator — Calculadora GRL para FC Mobile
 
-Calculadora ligera y moderna para Android, diseñada específicamente para calcular el **GRL (Global Rating Level)** en **FC Mobile**.  
+Calculadora ligera y moderna para Android, diseñada específicamente para calcular el **GRL (Global Rating Level)** en **FC Mobile**.
 La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose** para una interfaz nativa, fluida y reactiva.
 
 ---
@@ -19,24 +19,30 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 
 ---
 
-## Captura de pantalla
+## Capturas de pantalla
 
 <p align="center">
-  <img src="app/src/main/fcmcalc-playstore.png" alt="FCM Calculator" width="300">
+  <img src=".github/screenshots/preview-1.png" alt="FCM Calculator 1" width="200" />
+  <img src=".github/screenshots/preview-2.png" alt="FCM Calculator 2" width="200" />
+  <img src=".github/screenshots/preview-3.png" alt="FCM Calculator 3" width="200" />
+  <img src=".github/screenshots/preview-4.png" alt="FCM Calculator 4" width="200" />
+  <img src=".github/screenshots/preview-5.png" alt="FCM Calculator 5" width="200" />
+  <img src=".github/screenshots/preview-6.png" alt="FCM Calculator 6" width="200" />
+  <img src=".github/screenshots/preview-7.png" alt="FCM Calculator 7" width="200" />
 </p>
 
 ---
 
 ## Stack tecnológico
 
-| Tecnología | Versión / Uso |
-|------------|---------------|
-| **Kotlin** | Lenguaje de programación principal |
-| **Jetpack Compose** | Toolkit moderno para la interfaz de usuario (Material 3) |
-| **Kotlin Coroutines** | Gestión de tareas asíncronas |
-| **DataStore** | Almacenamiento persistente de preferencias (Color Dinámico) |
-| **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación |
-| **JUnit / Espresso** | Pruebas unitarias e instrumentadas |
+| Tecnología              | Versión / Uso                                               |
+| ----------------------- | ----------------------------------------------------------- |
+| **Kotlin**              | Lenguaje de programación principal                          |
+| **Jetpack Compose**     | Toolkit moderno para la interfaz de usuario (Material 3)    |
+| **Kotlin Coroutines**   | Gestión de tareas asíncronas                                |
+| **DataStore**           | Almacenamiento persistente de preferencias (Color Dinámico) |
+| **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación            |
+| **JUnit / Espresso**    | Pruebas unitarias e instrumentadas                          |
 
 ---
 
@@ -94,11 +100,13 @@ FCMCalculator/
 ### Desde línea de comandos
 
 **Windows:**
+
 ```bash
 gradlew.bat assembleDebug
 ```
 
 **Linux / macOS:**
+
 ```bash
 ./gradlew assembleDebug
 ```
@@ -111,7 +119,7 @@ El APK se generará en: `app/build/outputs/apk/debug/`
 
 La lógica de cálculo se encuentra en el archivo `domain/GrlCalculator.kt`. El cálculo se actualiza automáticamente gracias al estado reactivo de Compose.
 
-- **GRL Global**:  
+- **GRL Global**:
   Se calcula mediante el promedio redondeado al alza de los GRL base (GRL - Rango) de todos los jugadores, sumado al promedio redondeado al alza de los rangos de todos los jugadores.
 
 - **Fórmulas**:
@@ -119,7 +127,7 @@ La lógica de cálculo se encuentra en el archivo `domain/GrlCalculator.kt`. El 
   - `Promedio Rangos = ceil(SUMA(Rango) / N)`
   - `GRL FINAL = Promedio GRL Base + Promedio Rangos`
 
-- **Progreso**:  
+- **Progreso**:
   La aplicación indica cuántos puntos faltan en total para que cualquiera de los dos promedios suba un punto.
 
 ---
