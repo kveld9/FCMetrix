@@ -55,10 +55,9 @@ object GrlCalculator {
         val avgBase = ceil(sumaBase / n).toInt()
         val avgRango = ceil(sumaRango / n).toInt()
 
+        // Si el promedio de rango ya es 5, ya no se puede subir más el GRL global por esta vía.
         val pRango = if (avgRango >= 5) {
-            val totalMaximo = n * 5
-            val faltanParaMax = (totalMaximo - sumaRango).toInt()
-            if (faltanParaMax > 0) faltanParaMax else null
+            null
         } else {
             puntosParaSubir(sumaRango, n)
         }
@@ -69,12 +68,51 @@ object GrlCalculator {
             faltantes = 0,
             puntosGrl = puntosParaSubir(sumaBase, n),
             puntosRango = pRango,
-            rangoMaximo = usados.all { it.rango == 5.0 }
+            rangoMaximo = avgRango >= 5
         )
     }
 
     private fun puntosParaSubir(suma: Double, den: Int): Int {
         val promedioActual = ceil(suma / den).toInt()
         return (promedioActual * den) - suma.toInt() + 1
+    }
+
+    /**
+     * Ajusta el GRL de un jugador basándose en el cambio de rango.
+     * En FC Mobile, el GRL visible del jugador es GRL_BASE + RANGO.
+     */
+    fun ajustarGrlPorRango(grlActual: String, rangoActual: String, nuevoRango: String): String {
+        val g = grlActual.toDoubleOrNull() ?: return ""
+        val r = rangoActual.toDoubleOrNull() ?: 0.0
+        val nextR = nuevoRango.toDoubleOrNull() ?: 0.0
+
+        val base = g - r
+        return (base + nextR).toInt().toString()
+    }
+
+    /**
+     * Valida y sanea la entrada de GRL.
+     */
+    fun sanearGrl(input: String): String {
+        if (input.isBlank()) return ""
+        val numeric = input.filter { it.isDigit() }.toIntOrNull() ?: return ""
+        return when {
+            numeric < 47 -> "47"
+            numeric > 150 -> "150"
+            else -> numeric.toString()
+        }
+    }
+
+    /**
+     * Valida y sanea la entrada de Rango.
+     */
+    fun sanearRango(input: String): String {
+        if (input.isBlank()) return "0"
+        val numeric = input.filter { it.isDigit() }.toIntOrNull() ?: return "0"
+        return when {
+            numeric < 0 -> "0"
+            numeric > 5 -> "5"
+            else -> numeric.toString()
+        }
     }
 }

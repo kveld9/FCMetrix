@@ -1,4 +1,4 @@
-# FCM Calculator — Calculadora GRL para FC Mobile
+# FCM Calculator v1.2.0 — Calculadora GRL para FC Mobile
 
 Calculadora ligera y moderna para Android, diseñada específicamente para calcular el **GRL (Global Rating Level)** en **FC Mobile**.
 La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose** para una interfaz nativa, fluida y reactiva.
@@ -16,6 +16,7 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 - **Diseño moderno**: interfaz limpia basada en **Material 3**.
 - **Funciona offline**: no requiere conexión a Internet para realizar los cálculos.
 - **Icono personalizado** adaptativo en el lanzador.
+- **Soporte multi-idioma**: Disponible en Español e Inglés.
 
 ---
 
@@ -39,10 +40,12 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 | ----------------------- | ----------------------------------------------------------- |
 | **Kotlin**              | Lenguaje de programación principal                          |
 | **Jetpack Compose**     | Toolkit moderno para la interfaz de usuario (Material 3)    |
-| **Kotlin Coroutines**   | Gestión de tareas asíncronas                                |
+| **Kotlin Coroutines**   | Gestión de tareas asíncronas y **StateFlow**                |
+| **ViewModel**           | Gestión del estado de la UI persistente a cambios de config.|
 | **DataStore**           | Almacenamiento persistente de preferencias (Color Dinámico) |
 | **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación            |
 | **JUnit / Espresso**    | Pruebas unitarias e instrumentadas                          |
+| **Testing libraries**   | JUnit 4 y `kotlinx-coroutines-test`                         |
 
 ---
 
@@ -59,7 +62,10 @@ FCMCalculator/
 │           │   ├── domain/
 │           │   │   └── GrlCalculator.kt        # Lógica de negocio (Cálculo GRL)
 │           │   ├── ui/
+│           │   │   ├── components/             # Piezas reutilizables de la UI
+│           │   │   ├── model/                  # Modelos de vista y estados
 │           │   │   ├── theme/                  # Configuración de Material 3
+│           │   │   ├── viewmodel/              # Lógica de presentación (MVVM)
 │           │   │   └── GrlScreen.kt            # Pantalla principal en Compose
 │           │   └── MainActivity.kt             # Punto de entrada de la aplicación
 │           ├── res/
@@ -73,6 +79,20 @@ FCMCalculator/
 ├── gradlew
 └── settings.gradle.kts
 ```
+
+---
+
+## Arquitectura
+
+El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con **UDF (Unidirectional Data Flow)**, asegurando una separación clara de responsabilidades entre la lógica de negocio y la interfaz de usuario.
+
+---
+
+## Testing
+
+La robustez de la aplicación está garantizada mediante:
+- **Pruebas unitarias**: Cobertura de la lógica de negocio en `GrlCalculator.kt` y del estado en los ViewModels.
+- **Tecnologías**: Uso de **JUnit 4** y **kotlinx-coroutines-test** para pruebas de flujos asíncronos.
 
 ---
 
