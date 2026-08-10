@@ -1,8 +1,8 @@
-package com.android.fcmcalculator.domain
+package com.kveld9.fcmcalculator.domain
 
-import com.android.fcmcalculator.domain.GrlCalculator.Player
-import com.android.fcmcalculator.domain.GrlCalculator.SUPLENTES_MAX
-import com.android.fcmcalculator.domain.GrlCalculator.TITULARES
+import com.kveld9.fcmcalculator.domain.GrlCalculator.Player
+import com.kveld9.fcmcalculator.domain.GrlCalculator.SUPLENTES_MAX
+import com.kveld9.fcmcalculator.domain.GrlCalculator.TITULARES
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

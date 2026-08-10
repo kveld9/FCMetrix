@@ -1,4 +1,4 @@
-package com.android.fcmcalculator.data
+package com.kveld9.fcmcalculator.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore

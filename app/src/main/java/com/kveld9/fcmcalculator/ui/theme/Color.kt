@@ -1,4 +1,4 @@
-package com.android.fcmcalculator.ui.theme
+package com.kveld9.fcmcalculator.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

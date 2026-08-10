@@ -1,7 +1,7 @@
 # FCM Calculator — Calculadora GRL para FC Mobile
 
 Calculadora ligera y moderna para Android, diseñada específicamente para calcular el **GRL (Global Rating Level)** en **FC Mobile**.  
-La aplicación combina una capa nativa en **Kotlin** con una interfaz renderizada mediante **WebView** (HTML, CSS y JavaScript).
+La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose** para una interfaz nativa, fluida y reactiva.
 
 ---
 
@@ -10,12 +10,12 @@ La aplicación combina una capa nativa en **Kotlin** con una interfaz renderizad
 - **Cálculo automático del GRL global** a partir de los 11 titulares (y hasta 7 suplentes).
 - **Gestión de titulares y suplentes**: añade o elimina suplentes fácilmente.
 - **Rango rápido**: establece el rango de todos los jugadores con un solo toque (0‑5).
-- **Indicador de progreso**: muestra cuántos titulares has completado.
-- **Información de progreso**: te dice cuántos puntos de GRL y de rango faltan para subir de nivel.
-- **Interfaz oscura** (tema fijo, sin alternancia).
-- **Diseño responsive** y optimizado para móviles.
-- **Funciona offline** (sin conexión a Internet).
-- **Icono personalizado** en el lanzador.
+- **Indicador de progreso**: muestra cuántos titulares has completado en la barra de equipo.
+- **Información de progreso**: te indica cuántos puntos de GRL base y de rango faltan exactamente para subir al siguiente nivel.
+- **Material You**: soporte para **Color Dinámico** (en Android 12+) que adapta la interfaz a tu fondo de pantalla.
+- **Diseño moderno**: interfaz limpia basada en **Material 3**.
+- **Funciona offline**: no requiere conexión a Internet para realizar los cálculos.
+- **Icono personalizado** adaptativo en el lanzador.
 
 ---
 
@@ -31,13 +31,12 @@ La aplicación combina una capa nativa en **Kotlin** con una interfaz renderizad
 
 | Tecnología | Versión / Uso |
 |------------|---------------|
-| **Kotlin** | Capa nativa de Android |
-| **AndroidX** | `activity-ktx`, `appcompat`, `constraintlayout`, `core-ktx`, `material` |
-| **WebView** | Renderizado de la interfaz HTML |
-| **HTML5** | Estructura de la calculadora |
-| **CSS3** | Estilos y diseño responsivo |
-| **JavaScript (ES6)** | Lógica de cálculo e interacciones |
-| **Gradle (Kotlin DSL)** | Sistema de compilación |
+| **Kotlin** | Lenguaje de programación principal |
+| **Jetpack Compose** | Toolkit moderno para la interfaz de usuario (Material 3) |
+| **Kotlin Coroutines** | Gestión de tareas asíncronas |
+| **DataStore** | Almacenamiento persistente de preferencias (Color Dinámico) |
+| **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación |
+| **JUnit / Espresso** | Pruebas unitarias e instrumentadas |
 
 ---
 
@@ -48,23 +47,24 @@ FCMCalculator/
 ├── app/
 │   └── src/
 │       └── main/
-│           ├── assets/
-│           │   └── index.html          # Interfaz completa (HTML+CSS+JS)
-│           ├── java/
-│           │   └── com/android/fcmcalculator/
-│           │       └── MainActivity.kt # Actividad principal con WebView
+│           ├── java/com/kveld9/fcmcalculator/
+│           │   ├── data/
+│           │   │   └── ThemePreferences.kt     # Gestión de preferencias (DataStore)
+│           │   ├── domain/
+│           │   │   └── GrlCalculator.kt        # Lógica de negocio (Cálculo GRL)
+│           │   ├── ui/
+│           │   │   ├── theme/                  # Configuración de Material 3
+│           │   │   └── GrlScreen.kt            # Pantalla principal en Compose
+│           │   └── MainActivity.kt             # Punto de entrada de la aplicación
 │           ├── res/
-│           │   ├── drawable/           # Recursos gráficos
-│           │   ├── layout/             # (no usado, pero presente)
-│           │   ├── mipmap-*/           # Iconos del launcher
-│           │   ├── values/             # Colores, strings, temas
-│           │   └── xml/                # Configuración de respaldo
+│           │   ├── drawable/                   # Iconos y vectores
+│           │   ├── mipmap-*/                   # Iconos adaptativos del launcher
+│           │   └── values/                     # Strings y estilos base
 │           └── AndroidManifest.xml
 ├── gradle/
 ├── build.gradle.kts
 ├── gradle.properties
 ├── gradlew
-├── gradlew.bat
 └── settings.gradle.kts
 ```
 
@@ -72,9 +72,9 @@ FCMCalculator/
 
 ## Requisitos
 
-- **Android Studio** (versión estable recomendada)
-- **JDK 11** o **17** (compatible con Gradle)
-- **Android SDK** (API 24+ para `minSdk`, API 37 para `targetSdk`)
+- **Android Studio** (versión Ladybug o superior recomendada)
+- **JDK 11** o **17**
+- **Android SDK**: `minSdk` 24 (Nougat), `targetSdk` 37.
 
 ---
 
@@ -103,50 +103,38 @@ gradlew.bat assembleDebug
 ./gradlew assembleDebug
 ```
 
-El APK de depuración se generará en:
-```text
-app/build/outputs/apk/debug/
-```
+El APK se generará en: `app/build/outputs/apk/debug/`
 
 ---
 
 ## Cómo funciona la calculadora
 
-La lógica está completamente en `index.html` (JavaScript).  
-El cálculo se actualiza en tiempo real al modificar cualquier campo.
+La lógica de cálculo se encuentra en el archivo `domain/GrlCalculator.kt`. El cálculo se actualiza automáticamente gracias al estado reactivo de Compose.
 
-- **GRL (Global Rating Level)**:  
-  Se calcula como la suma de `(GRL - Rango)` de todos los jugadores cargados (titulares + suplentes), dividida entre el número total de jugadores, redondeando al alza. Luego se suma el promedio de los rangos.
+- **GRL Global**:  
+  Se calcula mediante el promedio redondeado al alza de los GRL base (GRL - Rango) de todos los jugadores, sumado al promedio redondeado al alza de los rangos de todos los jugadores.
+
+- **Fórmulas**:
+  - `Promedio GRL Base = ceil(SUMA(GRL - Rango) / N)`
+  - `Promedio Rangos = ceil(SUMA(Rango) / N)`
+  - `GRL FINAL = Promedio GRL Base + Promedio Rangos`
 
 - **Progreso**:  
-  Se muestran los puntos que faltan para que el promedio suba 1 punto, tanto en GRL base como en rango.
-
-- **Titulares**: siempre 11 jugadores, campos obligatorios.
-- **Suplentes**: hasta 7, se pueden añadir o eliminar.
+  La aplicación indica cuántos puntos faltan en total para que cualquiera de los dos promedios suba un punto.
 
 ---
 
 ## Desarrollo y personalización
 
-- **Cambios en la interfaz**: edita `app/src/main/assets/index.html`.
-- **Cambios en el comportamiento nativo**: edita `MainActivity.kt`.
-- **Estilos**: modifica las variables CSS en el `index.html`.
-
-Después de cada cambio, prueba en un emulador y en un dispositivo físico para verificar el comportamiento.
-
----
-
-## Versiones
-
-El proyecto sigue un versionado semántico simplificado: `MAJOR.MINOR` (ej. `1.0`, `1.1`, `2.0`).  
-Los APKs estables se publican en **GitHub Releases**; no se almacenan en el repositorio.
+- **Interfaz**: modifica los componentes en `app/src/main/java/com/kveld9/fcmcalculator/ui/GrlScreen.kt`.
+- **Lógica**: ajusta las fórmulas en `app/src/main/java/com/kveld9/fcmcalculator/domain/GrlCalculator.kt`.
+- **Estética**: cambia colores o formas en `app/src/main/java/com/kveld9/fcmcalculator/ui/theme/`.
 
 ---
 
 ## Licencia
 
-Este proyecto está bajo la licencia **MIT**.  
-Consulta el archivo [`LICENSE`](LICENSE) para más detalles.
+Este proyecto está bajo la licencia **MIT**. Consulta el archivo [`LICENSE`](LICENSE) para más detalles.
 
 ---
 

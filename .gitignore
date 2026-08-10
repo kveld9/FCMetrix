@@ -25,3 +25,5 @@ captures/
 
 # Release builds
 app/release/
+.artifacts/ 
+.kotlin/ 

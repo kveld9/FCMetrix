@@ -1,4 +1,4 @@
-package com.android.fcmcalculator
+package com.kveld9.fcmcalculator
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,9 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.android.fcmcalculator.data.ThemePreferences
-import com.android.fcmcalculator.ui.GrlScreen
-import com.android.fcmcalculator.ui.theme.FcmTheme
+import com.kveld9.fcmcalculator.data.ThemePreferences
+import com.kveld9.fcmcalculator.ui.GrlScreen
+import com.kveld9.fcmcalculator.ui.theme.FcmTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

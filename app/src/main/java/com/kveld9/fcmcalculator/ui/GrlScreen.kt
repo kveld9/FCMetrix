@@ -1,4 +1,4 @@
-package com.android.fcmcalculator.ui
+package com.kveld9.fcmcalculator.ui
 
 import android.os.Build
 import androidx.compose.foundation.background
@@ -63,7 +63,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.fcmcalculator.domain.GrlCalculator
+import com.kveld9.fcmcalculator.domain.GrlCalculator
 import kotlin.math.max
 import kotlin.math.min
 
