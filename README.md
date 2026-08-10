@@ -138,7 +138,7 @@ Después de cada cambio, prueba en un emulador y en un dispositivo físico para 
 
 ## Versiones
 
-El proyecto sigue el versionado semántico: `MAJOR.MINOR.PATCH` (ej. `1.0.0`).  
+El proyecto sigue un versionado semántico simplificado: `MAJOR.MINOR` (ej. `1.0`, `1.1`, `2.0`).  
 Los APKs estables se publican en **GitHub Releases**; no se almacenan en el repositorio.
 
 ---
