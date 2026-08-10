@@ -1,0 +1,36 @@
+<resources>
+    <!-- App & General -->
+    <string name="app_name">Calculadora FCM</string>
+    <string name="dynamic_color">Color Dinámico</string>
+    <string name="clear_all">LIMPIAR</string>
+    <string name="team">EQUIPO</string>
+
+    <!-- Header -->
+    <string name="header_title">Calculadora de GRL</string>
+    <string name="header_subtitle">FC MOBILE • 2026</string>
+
+    <!-- Results Card -->
+    <string name="grl_global">GRL GLOBAL</string>
+    <string name="missing_players">Faltan %1$d jugadores</string>
+    <string name="points_to_upgrade_grl">para subir GRL</string>
+    <string name="points_to_upgrade_rango">para subir Rango</string>
+    <string name="rank_max_reached">✓ Contribución de rango máxima</string>
+    <string name="missing_points_prefix">"Faltan "</string>
+    <string name="points_suffix">" puntos "</string>
+
+    <!-- Quick Actions -->
+    <string name="quick_rank">RANGO RÁPIDO</string>
+    <string name="quick_rank_hint"> (aplicar antes que GRL)</string>
+
+    <!-- Lists -->
+    <string name="titulares">Titulares</string>
+    <string name="suplentes">Suplentes</string>
+    <string name="no_substitutes">Sin suplentes</string>
+    <string name="grl_label">GRL</string>
+    <string name="rank_label">Rango</string>
+    <string name="remove">Eliminar</string>
+    <string name="add_substitute">+ SUPLENTE</string>
+
+    <!-- Footer -->
+    <string name="made_by">HECHO POR @KVELD9</string>
+</resources>

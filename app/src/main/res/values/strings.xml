@@ -1,3 +1,36 @@
 <resources>
+    <!-- App & General -->
     <string name="app_name">FCM Calculator</string>
+    <string name="dynamic_color">Dynamic Color</string>
+    <string name="clear_all">CLEAR</string>
+    <string name="team">TEAM</string>
+
+    <!-- Header -->
+    <string name="header_title">OVR Calculator</string>
+    <string name="header_subtitle">FC MOBILE • 2026</string>
+
+    <!-- Results Card -->
+    <string name="grl_global">GLOBAL OVR</string>
+    <string name="missing_players">Missing %1$d players</string>
+    <string name="points_to_upgrade_grl">to upgrade OVR</string>
+    <string name="points_to_upgrade_rango">to upgrade Rank</string>
+    <string name="rank_max_reached">✓ Max rank contribution reached</string>
+    <string name="missing_points_prefix">"Missing "</string>
+    <string name="points_suffix">" points "</string>
+
+    <!-- Quick Actions -->
+    <string name="quick_rank">QUICK RANK</string>
+    <string name="quick_rank_hint"> (apply before OVR)</string>
+
+    <!-- Lists -->
+    <string name="titulares">Starters</string>
+    <string name="suplentes">Substitutes</string>
+    <string name="no_substitutes">No substitutes</string>
+    <string name="grl_label">OVR</string>
+    <string name="rank_label">Rank</string>
+    <string name="remove">Remove</string>
+    <string name="add_substitute">+ SUBSTITUTE</string>
+
+    <!-- Footer -->
+    <string name="made_by">MADE BY @KVELD9</string>
 </resources>
