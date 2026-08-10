@@ -1,4 +1,9 @@
-# FCM Calculator v1.2.0 — Calculadora GRL para FC Mobile
+# Calculadora GRL para FC Mobile: FCM Calculator
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue.svg)](https://kotlinlang.org)
+[![Android](https://img.shields.io/badge/Android-minSdk%2024-green.svg)](https://developer.android.com)
+[![FOSS](https://img.shields.io/badge/FOSS-100%25-orange.svg)](https://en.wikipedia.org/wiki/Free_and_open-source_software)
 
 Calculadora ligera y moderna para Android, diseñada específicamente para calcular el **GRL (Global Rating Level)** en **FC Mobile**.
 La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose** para una interfaz nativa, fluida y reactiva.
@@ -17,6 +22,10 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 - **Funciona offline**: no requiere conexión a Internet para realizar los cálculos.
 - **Icono personalizado** adaptativo en el lanzador.
 - **Soporte multi-idioma**: Disponible en Español e Inglés.
+- **Privacidad y Ética**:
+  - **Sin permisos requeridos**: No solicita acceso a tu cámara, ubicación, contactos ni ningún otro permiso sensible.
+  - **Sin telemetría ni rastreo**: Cero analíticas, cero trackers. Tu actividad es privada y solo tuya.
+  - **Código abierto (FOSS)**: Totalmente transparente y auditable por la comunidad.
 
 ---
 
@@ -36,16 +45,16 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 
 ## Stack tecnológico
 
-| Tecnología              | Versión / Uso                                               |
-| ----------------------- | ----------------------------------------------------------- |
-| **Kotlin**              | Lenguaje de programación principal                          |
-| **Jetpack Compose**     | Toolkit moderno para la interfaz de usuario (Material 3)    |
-| **Kotlin Coroutines**   | Gestión de tareas asíncronas y **StateFlow**                |
-| **ViewModel**           | Gestión del estado de la UI persistente a cambios de config.|
-| **DataStore**           | Almacenamiento persistente de preferencias (Color Dinámico) |
-| **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación            |
-| **JUnit / Espresso**    | Pruebas unitarias e instrumentadas                          |
-| **Testing libraries**   | JUnit 4 y `kotlinx-coroutines-test`                         |
+| Tecnología              | Versión / Uso                                                |
+| ----------------------- | ------------------------------------------------------------ |
+| **Kotlin**              | Lenguaje de programación principal                           |
+| **Jetpack Compose**     | Toolkit moderno para la interfaz de usuario (Material 3)     |
+| **Kotlin Coroutines**   | Gestión de tareas asíncronas y **StateFlow**                 |
+| **ViewModel**           | Gestión del estado de la UI persistente a cambios de config. |
+| **DataStore**           | Almacenamiento persistente de preferencias (Color Dinámico)  |
+| **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación             |
+| **JUnit / Espresso**    | Pruebas unitarias e instrumentadas                           |
+| **Testing libraries**   | JUnit 4 y `kotlinx-coroutines-test`                          |
 
 ---
 
@@ -91,6 +100,7 @@ El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con **UDF (Unidirec
 ## Testing
 
 La robustez de la aplicación está garantizada mediante:
+
 - **Pruebas unitarias**: Cobertura de la lógica de negocio en `GrlCalculator.kt` y del estado en los ViewModels.
 - **Tecnologías**: Uso de **JUnit 4** y **kotlinx-coroutines-test** para pruebas de flujos asíncronos.
 
