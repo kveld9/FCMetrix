@@ -1,4 +1,4 @@
-package com.android.fcmcalculator
+package com.kveld9.fcmcalculator
 
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,7 +13,7 @@ class BaselineProfileGenerator {
 
     @Test
     fun generate() = baselineProfileRule.collect(
-        packageName = "com.android.fcmcalculator",
+        packageName = "com.kveld9.fcmcalculator",
         includeInactiveProcess = true
     ) {
         pressHome()

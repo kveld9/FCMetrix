@@ -1,4 +1,4 @@
-package com.android.fcmcalculator.domain
+package com.kveld9.fcmcalculator.domain
 
 import kotlin.math.ceil
 
