@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="fcm_bg">#0B0F0D</color>
+    <color name="fcm_surface">#121715</color>
+    <color name="fcm_green">#2EE671</color>
 </resources>
