@@ -30,6 +30,14 @@ object GrlCalculator {
         val puntosRango: Int?,
         /** Indica si todos los jugadores usados tienen rango 5. */
         val rangoMaximo: Boolean = false,
+        /** Promedio decimal del GRL Base (sin redondear). */
+        val promedioBase: Double? = null,
+        /** Promedio decimal del Rango (sin redondear). */
+        val promedioRango: Double? = null,
+        /** Cantidad mínima de puntos (de cualquier tipo) para subir el GRL global. */
+        val puntosSiguienteGrl: Int? = null,
+        /** Si la mejor mejora es por rango. */
+        val esMejoraPorRango: Boolean = false,
     )
 
     fun calcular(titulares: List<Player>, suplentes: List<Player>): Result {
@@ -62,13 +70,20 @@ object GrlCalculator {
             puntosParaSubir(sumaRango, n)
         }
 
+        val pBase = puntosParaSubir(sumaBase, n)
+        val mejorPuntos = if (pRango != null && pRango < pBase) pRango else pBase
+
         return Result(
             grlGlobal = avgBase + avgRango,
             titularesCargados = titCargados,
             faltantes = 0,
-            puntosGrl = puntosParaSubir(sumaBase, n),
+            puntosGrl = pBase,
             puntosRango = pRango,
-            rangoMaximo = avgRango >= 5
+            rangoMaximo = avgRango >= 5,
+            promedioBase = sumaBase / n,
+            promedioRango = sumaRango / n,
+            puntosSiguienteGrl = mejorPuntos,
+            esMejoraPorRango = pRango != null && pRango < pBase
         )
     }
 

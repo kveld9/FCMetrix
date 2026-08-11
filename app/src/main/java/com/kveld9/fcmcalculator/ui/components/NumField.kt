@@ -38,6 +38,7 @@ fun NumField(
     modifier: Modifier = Modifier,
     gold: Boolean = false,
     width: Dp? = null,
+    maxDigits: Int = 3,
     onFocusChanged: (Boolean) -> Unit = {},
 ) {
     val themeColor = if (gold) Color(0xFFD4A843) else MaterialTheme.colorScheme.primary
@@ -50,14 +51,14 @@ fun NumField(
             text = label,
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
-            color = if (isFocused) themeColor else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.9f),
             modifier = Modifier.padding(start = 4.dp, bottom = 4.dp)
         )
         BasicTextField(
             value = value,
             onValueChange = { raw ->
                 // Filtro básico de caracteres no numéricos y longitud
-                val filtered = raw.filter { it.isDigit() }.take(3)
+                val filtered = raw.filter { it.isDigit() }.take(maxDigits)
                 onValueChange(filtered)
             },
             textStyle = TextStyle(

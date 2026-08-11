@@ -1,6 +1,5 @@
 package com.kveld9.fcmcalculator.ui
 
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,19 +9,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,7 +57,10 @@ fun GrlScreen(
                 .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Header()
+            Header(
+                dynamicColor = dynamicColor,
+                onDynamicColorChange = onDynamicColorChange
+            )
 
             GrlCard(result = uiState.result)
 
@@ -84,18 +79,21 @@ fun GrlScreen(
                 onGrlChange = viewModel::onGrlChanged,
                 onRangoChange = viewModel::onRangoChanged,
                 onGrlFocusLost = viewModel::onGrlFocusLost,
+                onRangoFocusLost = viewModel::onRangoFocusLost,
                 scrollState = scrollState
             )
 
             SectionHeader(
                 title = stringResource(R.string.suplentes),
                 badge = "${uiState.suplentes.size}/${GrlCalculator.SUPLENTES_MAX}",
+                modifier = Modifier.padding(top = 16.dp)
             )
             SuplentesList(
                 suplentes = uiState.suplentes,
                 onGrlChange = viewModel::onGrlChanged,
                 onRangoChange = viewModel::onRangoChanged,
                 onGrlFocusLost = viewModel::onGrlFocusLost,
+                onRangoFocusLost = viewModel::onRangoFocusLost,
                 onRemove = viewModel::removeSubstitute,
                 scrollState = scrollState,
             )
@@ -106,27 +104,6 @@ fun GrlScreen(
             )
 
             Footer()
-        }
-
-        // Toggle Monet
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceContainer)
-            ) {
-                IconButton(
-                    onClick = { onDynamicColorChange(!dynamicColor) },
-                ) {
-                    Icon(
-                        imageVector = if (dynamicColor) Icons.Filled.Palette else Icons.Outlined.Palette,
-                        contentDescription = stringResource(R.string.dynamic_color),
-                        tint = if (dynamicColor) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
         }
     }
 }

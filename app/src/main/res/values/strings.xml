@@ -12,15 +12,16 @@
     <!-- Results Card -->
     <string name="grl_global">GLOBAL OVR</string>
     <string name="missing_players">Missing %1$d players</string>
-    <string name="points_to_upgrade_grl">to upgrade OVR</string>
-    <string name="points_to_upgrade_rango">to upgrade Rank</string>
     <string name="rank_max_reached">✓ Max rank contribution reached</string>
     <string name="missing_points_prefix">"Missing "</string>
-    <string name="points_suffix">" points "</string>
+    <string name="upgrade_ovr_base_suffix">" base points to upgrade OVR"</string>
+    <string name="upgrade_ovr_rank_suffix">" rank points to upgrade OVR"</string>
+    <string name="base_avg_label">Base</string>
+    <string name="rank_avg_label">Rank</string>
 
     <!-- Quick Actions -->
     <string name="quick_rank">QUICK RANK</string>
-    <string name="quick_rank_hint"> (apply before OVR)</string>
+    <string name="quick_rank_hint">(apply before OVR)</string>
 
     <!-- Lists -->
     <string name="titulares">Starters</string>
@@ -33,4 +34,5 @@
 
     <!-- Footer -->
     <string name="made_by">MADE BY @KVELD9</string>
+    <string name="open_source_label">FREE &amp; OPEN SOURCE</string>
 </resources>

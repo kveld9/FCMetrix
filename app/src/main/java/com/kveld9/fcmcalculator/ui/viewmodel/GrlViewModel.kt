@@ -1,15 +1,12 @@
 package com.kveld9.fcmcalculator.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.kveld9.fcmcalculator.domain.GrlCalculator
 import com.kveld9.fcmcalculator.ui.model.GrlUiState
 import com.kveld9.fcmcalculator.ui.model.PlayerData
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class GrlViewModel : ViewModel() {
@@ -24,6 +21,16 @@ class GrlViewModel : ViewModel() {
 
     fun onRangoChanged(playerId: String, newRango: String) {
         updatePlayer(playerId) { player ->
+            // Si está vacío, permitimos que el usuario borre el campo
+            if (newRango.isEmpty()) {
+                val updatedGrl = GrlCalculator.ajustarGrlPorRango(
+                    grlActual = player.grl,
+                    rangoActual = player.rango,
+                    nuevoRango = "0"
+                )
+                return@updatePlayer player.copy(rango = "", grl = updatedGrl)
+            }
+
             val saneado = GrlCalculator.sanearRango(newRango)
             val updatedGrl = GrlCalculator.ajustarGrlPorRango(
                 grlActual = player.grl,
@@ -31,6 +38,16 @@ class GrlViewModel : ViewModel() {
                 nuevoRango = saneado
             )
             player.copy(rango = saneado, grl = updatedGrl)
+        }
+    }
+
+    /**
+     * Llamado cuando el campo de Rango pierde el foco para asegurar que no quede vacío.
+     */
+    fun onRangoFocusLost(playerId: String, currentRango: String) {
+        val saneado = GrlCalculator.sanearRango(currentRango)
+        if (saneado != currentRango) {
+            updatePlayer(playerId) { it.copy(rango = saneado) }
         }
     }
 
