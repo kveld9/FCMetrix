@@ -35,6 +35,7 @@ fun PlayerRow(
     onGrlChange: (String) -> Unit,
     onRangoChange: (String) -> Unit,
     onGrlFocusLost: (String) -> Unit,
+    onRangoFocusLost: (String) -> Unit,
     modifier: Modifier = Modifier,
     isSuplente: Boolean = false,
     onRemove: (() -> Unit)? = null,
@@ -87,11 +88,14 @@ fun PlayerRow(
                     coroutineScope.launch {
                         scrollState.animateScrollTo(scrollState.value + 120)
                     }
+                } else {
+                    onRangoFocusLost(rango)
                 }
             },
             label = stringResource(R.string.rank_label),
             gold = true,
             width = 70.dp,
+            maxDigits = 1,
         )
         if (isSuplente && onRemove != null) {
             IconButton(

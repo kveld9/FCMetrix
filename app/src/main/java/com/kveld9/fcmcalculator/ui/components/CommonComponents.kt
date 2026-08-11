@@ -1,6 +1,7 @@
 package com.kveld9.fcmcalculator.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +26,9 @@ import com.kveld9.fcmcalculator.R
 import com.kveld9.fcmcalculator.ui.model.PlayerData
 
 @Composable
-fun SectionHeader(title: String, badge: String) {
+fun SectionHeader(title: String, badge: String, modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp, bottom = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -39,6 +40,11 @@ fun SectionHeader(title: String, badge: String) {
             fontWeight = FontWeight.Black,
             letterSpacing = 1.2.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.2.sp,
+            )
         )
         Box(
             modifier = Modifier
@@ -61,6 +67,7 @@ fun RangoQuickChips(onChange: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
             modifier = Modifier.padding(start = 2.dp, bottom = 10.dp)
         ) {
             Text(
@@ -129,7 +136,12 @@ fun Actions(onAddSuplente: () -> Unit, onClearAll: () -> Unit) {
             modifier = Modifier
                 .weight(0.6f)
                 .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.errorContainer)
+                .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f))
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
+                    shape = RoundedCornerShape(16.dp)
+                )
                 .clickable(onClick = onClearAll)
                 .padding(vertical = 16.dp),
             contentAlignment = Alignment.Center,
@@ -138,7 +150,7 @@ fun Actions(onAddSuplente: () -> Unit, onClearAll: () -> Unit) {
                 text = stringResource(R.string.clear_all),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onErrorContainer,
+                color = MaterialTheme.colorScheme.error,
             )
         }
     }
@@ -150,6 +162,7 @@ fun TitularesList(
     onGrlChange: (String, String) -> Unit,
     onRangoChange: (String, String) -> Unit,
     onGrlFocusLost: (String, String) -> Unit,
+    onRangoFocusLost: (String, String) -> Unit,
     scrollState: androidx.compose.foundation.ScrollState,
 ) {
     Column(
@@ -165,6 +178,7 @@ fun TitularesList(
                     onGrlChange = { onGrlChange(player.id, it) },
                     onRangoChange = { onRangoChange(player.id, it) },
                     onGrlFocusLost = { onGrlFocusLost(player.id, it) },
+                    onRangoFocusLost = { onRangoFocusLost(player.id, it) },
                     scrollState = scrollState,
                 )
             }
@@ -178,6 +192,7 @@ fun SuplentesList(
     onGrlChange: (String, String) -> Unit,
     onRangoChange: (String, String) -> Unit,
     onGrlFocusLost: (String, String) -> Unit,
+    onRangoFocusLost: (String, String) -> Unit,
     onRemove: (String) -> Unit,
     scrollState: androidx.compose.foundation.ScrollState,
 ) {
@@ -211,6 +226,7 @@ fun SuplentesList(
                     onGrlChange = { onGrlChange(player.id, it) },
                     onRangoChange = { onRangoChange(player.id, it) },
                     onGrlFocusLost = { onGrlFocusLost(player.id, it) },
+                    onRangoFocusLost = { onRangoFocusLost(player.id, it) },
                     isSuplente = true,
                     onRemove = { onRemove(player.id) },
                     scrollState = scrollState,

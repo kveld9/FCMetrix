@@ -59,7 +59,7 @@ fun Footer() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 40.dp, bottom = 48.dp)
+            .padding(top = 40.dp, bottom = 64.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
@@ -91,5 +91,13 @@ fun Footer() {
                 )
             )
         }
+        Text(
+            text = stringResource(R.string.open_source_label),
+            fontSize = 9.sp,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+            letterSpacing = 1.sp,
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
