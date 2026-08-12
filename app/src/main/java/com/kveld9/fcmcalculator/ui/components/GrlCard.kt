@@ -5,8 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -28,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kveld9.fcmcalculator.R
 import com.kveld9.fcmcalculator.domain.GrlCalculator
+import androidx.compose.ui.tooling.preview.Preview
+import com.kveld9.fcmcalculator.ui.theme.FcmTheme
 
 @Composable
 fun GrlCard(result: GrlCalculator.Result) {
@@ -139,49 +142,119 @@ private fun GrlHint(result: GrlCalculator.Result) {
         return
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        // Mostrar la "mejor" mejora (la que requiere menos puntos)
-        val mejorPuntos = result.puntosSiguienteGrl
-        val esRango = result.esMejoraPorRango
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .padding(top = 12.dp, bottom = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        val pBase = result.puntosGrl
+        val pRango = result.puntosRango
+        val esRangoMejor = result.esMejoraPorRango
 
-        if (mejorPuntos != null) {
-            val suffix = if (esRango) {
-                stringResource(R.string.upgrade_ovr_rank_suffix)
-            } else {
-                stringResource(R.string.upgrade_ovr_base_suffix)
-            }
-            PuntoHint(texto = suffix, puntos = mejorPuntos)
-        }
+        PathColumn(
+            modifier = Modifier.weight(1f),
+            title = stringResource(R.string.rank_path),
+            pointsText = when {
+                pRango != null -> stringResource(R.string.plus_rank_points, pRango)
+                result.rangoMaximo -> "MAX"
+                else -> "--"
+            },
+            isFastest = esRangoMejor && pRango != null,
+            isCompleted = result.rangoMaximo
+        )
 
-        if (result.rangoMaximo) {
-            Text(
-                text = stringResource(R.string.rank_max_reached),
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(top = 2.dp)
-            )
-        }
+        PathColumn(
+            modifier = Modifier.weight(1f),
+            title = stringResource(R.string.base_path),
+            pointsText = if (pBase != null) stringResource(R.string.plus_base_points, pBase) else "--",
+            isFastest = !esRangoMejor && pBase != null,
+            isCompleted = false
+        )
     }
 }
 
 @Composable
-private fun PuntoHint(texto: String, puntos: Int?) {
-    if (puntos == null) return
-    val annotatedString = buildAnnotatedString {
-        append(stringResource(R.string.missing_points_prefix))
-        withStyle(style = SpanStyle(
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
-        )) {
-            append(puntos.toString())
+private fun PathColumn(
+    modifier: Modifier,
+    title: String,
+    pointsText: String,
+    isFastest: Boolean,
+    isCompleted: Boolean = false
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.03f))
+            .border(
+                1.dp,
+                if (isFastest) MaterialTheme.colorScheme.primary.copy(alpha = 0.3f) 
+                else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
+                RoundedCornerShape(12.dp)
+            )
+            .padding(vertical = 12.dp, horizontal = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = title,
+            fontSize = 9.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 0.5.sp,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+        )
+        
+        Text(
+            text = pointsText,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = when {
+                isCompleted -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                isFastest -> MaterialTheme.colorScheme.primary
+                else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            },
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 2.dp)
+        )
+
+        if (isFastest) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 6.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
+                    .padding(horizontal = 6.dp, vertical = 2.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.fastest_label),
+                    fontSize = 8.sp,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
-        append(texto)
     }
-    Text(
-        text = annotatedString,
-        fontSize = 13.sp,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-        textAlign = TextAlign.Center
-    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GrlCardPreview() {
+    FcmTheme {
+        Column(modifier = Modifier.padding(16.dp)) {
+            GrlCard(
+                result = GrlCalculator.Result(
+                    grlGlobal = 126,
+                    titularesCargados = 11,
+                    faltantes = 0,
+                    puntosGrl = 4,
+                    puntosRango = null,
+                    esMejoraPorRango = false,
+                    rangoMaximo = true,
+                    promedioBase = 120.73,
+                    promedioRango = 5.0
+                )
+            )
+        }
+    }
 }

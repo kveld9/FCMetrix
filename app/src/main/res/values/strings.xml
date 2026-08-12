@@ -18,6 +18,12 @@
     <string name="upgrade_ovr_rank_suffix">" rank points to upgrade OVR"</string>
     <string name="base_avg_label">Base</string>
     <string name="rank_avg_label">Rank</string>
+    <string name="recommended_label">Recommended</string>
+    <string name="rank_path">RANK PATH</string>
+    <string name="base_path">BASE PATH</string>
+    <string name="fastest_label">FASTEST</string>
+    <string name="plus_rank_points">+%1$d rank points</string>
+    <string name="plus_base_points">+%1$d base points</string>
 
     <!-- Quick Actions -->
     <string name="quick_rank">QUICK RANK</string>
