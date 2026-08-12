@@ -18,6 +18,12 @@
     <string name="upgrade_ovr_rank_suffix">" puntos de rango para subir GRL"</string>
     <string name="base_avg_label">Base</string>
     <string name="rank_avg_label">Rango</string>
+    <string name="recommended_label">Recomendado</string>
+    <string name="rank_path">CAMINO RANGO</string>
+    <string name="base_path">CAMINO BASE</string>
+    <string name="fastest_label">MÁS RÁPIDO</string>
+    <string name="plus_rank_points">+%1$d puntos rango</string>
+    <string name="plus_base_points">+%1$d puntos base</string>
 
     <!-- Quick Actions -->
     <string name="quick_rank">RANGO RÁPIDO</string>

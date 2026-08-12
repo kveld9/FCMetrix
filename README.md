@@ -17,7 +17,7 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 - **Rango rápido**: establece el rango de todos los jugadores con un solo toque (0‑5).
 - **Indicador de progreso**: muestra cuántos titulares has completado en la barra de equipo.
 - **Información de precisión**: visualiza promedios decimales exactos de **Base OVR** y **Rango** (ej. 125.81 • 4.90) para entender el redondeo de EA Sports.
-- **Sugerencias inteligentes**: indica el camino más eficiente para subir de nivel (¿Falta 1 punto de rango o 11 de base?).
+- **Sugerencias inteligentes**: Muestra de forma paralela los dos caminos para subir de nivel (Puntos de Base vs. Puntos de Rango) y resalta el **Camino más rápido** con un indicador visual.
 - **Interfaz Fluida**: diseño con **Fade Out** superior y navegación libre de solapamientos.
 - **Material You**: soporte para **Color Dinámico** (en Android 12+) integrado en el header.
 - **Diseño moderno**: interfaz limpia basada en **Material 3**.
@@ -160,7 +160,7 @@ La lógica de cálculo se encuentra en el archivo `domain/GrlCalculator.kt`. El 
   - `GRL FINAL = Promedio GRL Base + Promedio Rangos`
 
 - **Optimización de Mejora**:
-  La aplicación analiza ambos promedios decimales y sugiere la mejora que requiere menos cambios (puntos de base vs. puntos de rango), ahorrando recursos al usuario.
+  La aplicación analiza ambos promedios decimales y presenta simultáneamente las dos rutas posibles para subir el GRL global. El sistema resalta automáticamente el camino que requiere menos puntos, permitiendo al usuario comparar y decidir la mejor estrategia para su equipo.
 
 ---
 
