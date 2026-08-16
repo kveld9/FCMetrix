@@ -11,7 +11,12 @@ kotlin = "2.2.10"
 datastore = "1.1.1"
 lifecycle = "2.11.0"
 coroutinesTest = "1.11.0"
-benchmarkMacroJunit4 = "1.4.1"
+benchmarkMacroJunit4 = "1.5.0-rc01"
+baselineprofile = "1.5.0-rc01"
+profileinstaller = "1.4.1"
+room = "2.8.4"
+ksp = "2.2.10-2.0.2"
+serialization = "1.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,9 +36,25 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 compose-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+composeTestingJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+composeTestingManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+# Room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# Serialization
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

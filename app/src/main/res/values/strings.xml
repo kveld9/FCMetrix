@@ -1,8 +1,9 @@
 <resources>
     <!-- App & General -->
-    <string name="app_name">FCM Calculator</string>
+    <string name="app_name">FCMetrix</string>
     <string name="dynamic_color">Dynamic Color</string>
     <string name="clear_all">CLEAR</string>
+    <string name="save_action">SAVE</string>
     <string name="team">TEAM</string>
 
     <!-- Header -->
@@ -12,10 +13,9 @@
     <!-- Results Card -->
     <string name="grl_global">GLOBAL OVR</string>
     <string name="missing_players">Missing %1$d players</string>
+    <string name="players_ready_count">%1$d of 11 players ready</string>
+    <string name="missing_players_to_calc">Missing %1$d players to calculate</string>
     <string name="rank_max_reached">✓ Max rank contribution reached</string>
-    <string name="missing_points_prefix">"Missing "</string>
-    <string name="upgrade_ovr_base_suffix">" base points to upgrade OVR"</string>
-    <string name="upgrade_ovr_rank_suffix">" rank points to upgrade OVR"</string>
     <string name="base_avg_label">Base</string>
     <string name="rank_avg_label">Rank</string>
     <string name="recommended_label">Recommended</string>
@@ -29,7 +29,7 @@
     <string name="quick_rank">QUICK RANK</string>
     <string name="quick_rank_hint">(apply before OVR)</string>
 
-    <!-- Lists -->
+    <!-- Lists & Teams -->
     <string name="titulares">Starters</string>
     <string name="suplentes">Substitutes</string>
     <string name="no_substitutes">No substitutes</string>
@@ -37,6 +37,38 @@
     <string name="rank_label">Rank</string>
     <string name="remove">Remove</string>
     <string name="add_substitute">+ SUBSTITUTE</string>
+    <string name="manage_teams_title">Manage Teams</string>
+    <string name="new_team_name_label">New Team Name</string>
+    <string name="no_saved_teams">No saved squads yet. Save your current squad above.</string>
+    <string name="load_desc">Load team</string>
+    <string name="delete_desc">Delete team</string>
+    <string name="confirm_delete_team_title">Delete Team</string>
+    <string name="confirm_delete_team_message">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="delete_action">Delete</string>
+
+    <!-- Preview & Share -->
+    <string name="preview_title">Result Preview</string>
+    <string name="share_action">Share</string>
+    <string name="download_action">Download</string>
+    <string name="save_success">Image saved to gallery</string>
+    <string name="save_error">Error saving image</string>
+
+    <!-- Accessibility / TalkBack -->
+    <string name="desc_grl_card_complete">Global OVR %1$d. Base average %2$s, Rank average %3$s.</string>
+    <string name="desc_grl_card_incomplete">Calculation pending. Missing %1$d players to complete the starting 11.</string>
+    <string name="desc_recommended_rank">Recommendation: upgrade Rank. Needs %1$d rank points to upgrade Global OVR.</string>
+    <string name="desc_recommended_base">Recommendation: upgrade OVR Base. Needs %1$d base points to upgrade Global OVR.</string>
+    <string name="desc_share">Share result</string>
+    <string name="desc_player_row">%1$s %2$d. OVR %3$s, Rank %4$s.</string>
+    <string name="desc_remove_player">Remove substitute number %1$d</string>
+    <string name="desc_quick_rank_chip">Apply rank %1$d to all players</string>
+    <string name="desc_load_team">Load team %1$s</string>
+    <string name="desc_delete_team">Delete team %1$s</string>
+
+    <!-- Feedback -->
+    <string name="clamping_grl">OVR adjusted to legal limits (%1$d - %2$d)</string>
+    <string name="clamping_rank">Rank adjusted to legal limits (%1$d - %2$d)</string>
 
     <!-- Footer -->
     <string name="made_by">MADE BY @KVELD9</string>

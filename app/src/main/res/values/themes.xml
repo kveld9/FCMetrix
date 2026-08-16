@@ -1,11 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FCMCalculator" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.FCMetrix" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/fcm_bg</item>
         <item name="android:statusBarColor">@color/fcm_bg</item>
         <item name="android:navigationBarColor">@color/fcm_bg</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="Theme.FCMCalculator" parent="Base.Theme.FCMCalculator" />
+    <style name="Theme.FCMetrix" parent="Base.Theme.FCMetrix" />
 </resources>
