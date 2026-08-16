@@ -5,11 +5,11 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/fcmcalc"
+        android:icon="@mipmap/fcmetrix"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/fcmcalc_round"
+        android:roundIcon="@mipmap/fcmetrix_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FCMCalculator">
+        android:theme="@style/Theme.FCMetrix">
 
         <activity
             android:name=".MainActivity"
@@ -22,6 +22,16 @@
             </intent-filter>
 
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

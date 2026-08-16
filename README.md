@@ -1,32 +1,43 @@
-# Calculadora GRL para FC Mobile: FCM Calculator
+# Calculadora GRL para FC Mobile: FCMetrix
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue.svg)](https://kotlinlang.org)
 [![Android](https://img.shields.io/badge/Android-minSdk%2024-green.svg)](https://developer.android.com)
 [![FOSS](https://img.shields.io/badge/FOSS-100%25-orange.svg)](https://en.wikipedia.org/wiki/Free_and_open-source_software)
 
-Calculadora ligera y moderna para Android, diseñada específicamente para calcular el **GRL (Global Rating Level)** en **FC Mobile**.
-La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose** para una interfaz nativa, fluida y reactiva.
+Calculadora ligera y moderna para Android, diseñada específicamente para calcular y optimizar el **GRL (Global Rating Level)** en **FC Mobile**.
+La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose (Material 3)** para ofrecer una interfaz nativa, fluida y reactiva.
 
 ---
 
 ## Características
 
-- **Cálculo automático del GRL global** a partir de los 11 titulares (y hasta 7 suplentes).
-- **Gestión de titulares y suplentes**: añade o elimina suplentes fácilmente.
-- **Rango rápido**: establece el rango de todos los jugadores con un solo toque (0‑5).
-- **Indicador de progreso**: muestra cuántos titulares has completado en la barra de equipo.
-- **Información de precisión**: visualiza promedios decimales exactos de **Base OVR** y **Rango** (ej. 125.81 • 4.90) para entender el redondeo de EA Sports.
-- **Sugerencias inteligentes**: Muestra de forma paralela los dos caminos para subir de nivel (Puntos de Base vs. Puntos de Rango) y resalta el **Camino más rápido** con un indicador visual.
-- **Interfaz Fluida**: diseño con **Fade Out** superior y navegación libre de solapamientos.
-- **Material You**: soporte para **Color Dinámico** (en Android 12+) integrado en el header.
-- **Diseño moderno**: interfaz limpia basada en **Material 3**.
-- **Funciona offline**: no requiere conexión a Internet para realizar los cálculos.
-- **Icono personalizado** adaptativo en el lanzador.
-- **Soporte multi-idioma**: Disponible en Español e Inglés.
+- **Cálculo automático del GRL global**: a partir de los 11 titulares (y hasta 7 suplentes).
+- **Gestión de titulares y suplentes**: añade o elimina suplentes dinámicamente con límites reglamentarios.
+- **Rango rápido**: aplica el rango deseado a todos los jugadores con un solo toque (0‑5).
+- **Gestión de Plantillas (Squad Management)**:
+  - Guarda múltiples alineaciones personalizadas con nombre propio.
+  - Carga y alterna entre diferentes plantillas guardadas al instante.
+  - Elimina alineaciones con confirmación de seguridad.
+  - Persistencia local mediante **Room Database**.
+- **Sugerencias inteligentes y caminos de optimización**:
+  - Muestra en paralelo las dos vías posibles para subir de nivel: **Vía GRL Base** vs. **Vía Rango**.
+  - Identifica y destaca visualmente el **Camino más rápido** para alcanzar el próximo OVR.
+- **Información de precisión**: promedios decimales exactos de **GRL Base** y **Rango** (ej. `125.81 • 4.90`) para comprender el algoritmo de redondeo de EA Sports.
+- **Exportación y Compartir Tarjeta de Resultados**:
+  - Vista previa modal de la tarjeta de resumen.
+  - Guardado en alta calidad en la galería del dispositivo (`Pictures/FCMetrix`).
+  - Compartir imagen directamente en apps de mensajería y redes sociales mediante `FileProvider`.
+- **Material You y Color Dinámico**: soporte para paletas dinámicas basadas en el fondo de pantalla (Android 12+), con toggle manual persistente en DataStore.
+- **Ícono Adaptativo & Themed Icons (Monocromo)**:
+  - Soporte completo para íconos adaptativos y tema monocromático dinámico en Android 13+ (API 33).
+- **Accesibilidad (TalkBack)**: descripciones semánticas enriquecidas para lectores de pantalla en todas las acciones, tarjetas y listas.
+- **Rendimiento optimizado**: integración de **Baseline Profiles** para tiempos de inicio inmediatos y scroll sin jank.
+- **Funciona 100% Offline**: todos los cálculos y datos se procesan en el dispositivo sin necesidad de conexión a Internet.
+- **Soporte multi-idioma**: Español e Inglés con detección automática.
 - **Privacidad y Ética**:
-  - **Sin permisos requeridos**: No solicita acceso a tu cámara, ubicación, contactos ni ningún otro permiso sensible.
-  - **Sin telemetría ni rastreo**: Cero analíticas, cero trackers. Tu actividad es privada y solo tuya.
+  - **Sin permisos sensibles**: No solicita acceso a cámara, ubicación ni contactos.
+  - **Sin telemetría ni rastreo**: Cero analíticas, cero rastreadores. Tu actividad es privada.
   - **Código abierto (FOSS)**: Totalmente transparente y auditable por la comunidad.
 
 ---
@@ -34,141 +45,74 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 ## Capturas de pantalla
 
 <p align="center">
-  <img src=".github/screenshots/preview-1.png" alt="FCM Calculator 1" width="200" />
-  <img src=".github/screenshots/preview-2.png" alt="FCM Calculator 2" width="200" />
-  <img src=".github/screenshots/preview-3.png" alt="FCM Calculator 3" width="200" />
-  <img src=".github/screenshots/preview-4.png" alt="FCM Calculator 4" width="200" />
-  <img src=".github/screenshots/preview-5.png" alt="FCM Calculator 5" width="200" />
-  <img src=".github/screenshots/preview-6.png" alt="FCM Calculator 6" width="200" />
-  <img src=".github/screenshots/preview-7.png" alt="FCM Calculator 7" width="200" />
+  <img src=".github/screenshots/preview-1.png" alt="FCMetrix 1" width="200" />
+  <img src=".github/screenshots/preview-2.png" alt="FCMetrix 2" width="200" />
+  <img src=".github/screenshots/preview-3.png" alt="FCMetrix 3" width="200" />
+  <img src=".github/screenshots/preview-4.png" alt="FCMetrix 4" width="200" />
+  <img src=".github/screenshots/preview-5.png" alt="FCMetrix 5" width="200" />
+  <img src=".github/screenshots/preview-6.png" alt="FCMetrix 6" width="200" />
+  <img src=".github/screenshots/preview-7.png" alt="FCMetrix 7" width="200" />
 </p>
+
+---
+
+## Lógica de cálculo
+
+El GRL Global se calcula utilizando por separado el promedio del GRL Base y el promedio del Rango.
+
+### Fórmula
+
+$$\text{GRL Global} = \lceil\text{Promedio GRL Base}\rceil + \lceil\text{Promedio Rango}\rceil$$
+
+Donde:
+- **Promedio GRL Base** $= \frac{\sum (\text{GRL}_i - \text{Rango}_i)}{N}$
+- **Promedio Rango** $= \frac{\sum \text{Rango}_i}{N}$
+
+El redondeo hacia arriba ($\lceil x \rceil$ / `ceil`) se aplica de forma independiente a cada promedio antes de realizar la suma final.
+
+### Reglas de negocio
+
+- **$N$ = total de jugadores con GRL asignado**.
+- **Mínimo de jugadores**: 11 (si faltan titulares, no se calcula el GRL Global).
+- **Máximo de jugadores**: 18 (11 titulares + hasta 7 suplentes).
+- **Límites de GRL**: 47 – 150.
+- **Límites de Rango**: 0 – 5.
+- Los jugadores sin GRL cargado no participan del cálculo.
+- **Prioridad de recomendación**: En caso de empate en la cantidad de puntos necesarios para subir de nivel entre GRL Base y Rango, se prioriza y recomienda la mejora de **GRL Base**.
 
 ---
 
 ## Stack tecnológico
 
-| Tecnología              | Versión / Uso                                                |
-| ----------------------- | ------------------------------------------------------------ |
-| **Kotlin**              | Lenguaje de programación principal                           |
-| **Jetpack Compose**     | Toolkit moderno para la interfaz de usuario (Material 3)     |
-| **Kotlin Coroutines**   | Gestión de tareas asíncronas y **StateFlow**                 |
-| **ViewModel**           | Gestión del estado de la UI persistente a cambios de config. |
-| **DataStore**           | Almacenamiento persistente de preferencias (Color Dinámico)  |
-| **Gradle (Kotlin DSL)** | Sistema de gestión de dependencias y compilación             |
-| **JUnit / Espresso**    | Pruebas unitarias e instrumentadas                           |
-| **Testing libraries**   | JUnit 4 y `kotlinx-coroutines-test`                          |
+| Tecnología                     | Versión / Uso                                                    |
+| ------------------------------ | ---------------------------------------------------------------- |
+| **Kotlin**                     | Lenguaje principal del proyecto                                  |
+| **Jetpack Compose**            | UI declarativa moderna basada en **Material 3**                  |
+| **Room Database**              | Persistencia SQLite local para alineaciones guardadas            |
+| **DataStore Preferences**      | Almacenamiento reactivo de configuraciones (Color Dinámico)      |
+| **Kotlinx Serialization**      | Serialización JSON segura para entidades y listas                |
+| **Kotlin Coroutines & Flow**   | Programación asíncrona reactiva con `StateFlow`                  |
+| **AndroidX Lifecycle**         | Arquitectura `ViewModel` con retención de estado                 |
+| **KSP**                        | Kotlin Symbol Processing para Room y generadores de código       |
+| **Baseline Profiles**          | Precompilación de rutas críticas para inicio y render ultra-rápido |
+| **JUnit 4 & Espresso**         | Pruebas unitarias e instrumentadas automatizadas                 |
+| **Gradle (Kotlin DSL)**        | Sistema de compilación y gestión de dependencias                 |
 
 ---
 
-## Estructura del proyecto
+## Requisitos y Compilación
 
-```text
-FCMCalculator/
-├── app/
-│   └── src/
-│       └── main/
-│           ├── java/com/kveld9/fcmcalculator/
-│           │   ├── data/
-│           │   │   └── ThemePreferences.kt     # Gestión de preferencias (DataStore)
-│           │   ├── domain/
-│           │   │   └── GrlCalculator.kt        # Lógica de negocio (Cálculo GRL)
-│           │   ├── ui/
-│           │   │   ├── components/             # Piezas reutilizables de la UI
-│           │   │   ├── model/                  # Modelos de vista y estados
-│           │   │   ├── theme/                  # Configuración de Material 3
-│           │   │   ├── viewmodel/              # Lógica de presentación (MVVM)
-│           │   │   └── GrlScreen.kt            # Pantalla principal en Compose
-│           │   └── MainActivity.kt             # Punto de entrada de la aplicación
-│           ├── res/
-│           │   ├── drawable/                   # Iconos y vectores
-│           │   ├── mipmap-*/                   # Iconos adaptativos del launcher
-│           │   └── values/                     # Strings y estilos base
-│           └── AndroidManifest.xml
-├── gradle/
-├── build.gradle.kts
-├── gradle.properties
-├── gradlew
-└── settings.gradle.kts
-```
-
----
-
-## Arquitectura
-
-El proyecto sigue el patrón **MVVM (Model-View-ViewModel)** con **UDF (Unidirectional Data Flow)**, asegurando una separación clara de responsabilidades entre la lógica de negocio y la interfaz de usuario.
-
----
-
-## Testing
-
-La robustez de la aplicación está garantizada mediante:
-
-- **Pruebas unitarias**: Cobertura de la lógica de negocio en `GrlCalculator.kt` y del estado en los ViewModels.
-- **Tecnologías**: Uso de **JUnit 4** y **kotlinx-coroutines-test** para pruebas de flujos asíncronos.
-
----
-
-## Requisitos
-
-- **Android Studio** (versión Ladybug o superior recomendada)
-- **JDK 11** o **17**
-- **Android SDK**: `minSdk` 24 (Nougat), `targetSdk` 37.
-
----
-
-## Cómo compilar
-
-### Desde Android Studio
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/kveld9/FCMCalculator.git
-   cd FCMCalculator
-   ```
-2. Abre el proyecto en Android Studio.
-3. Espera a que Gradle sincronice las dependencias.
-4. Ejecuta la app en un emulador o dispositivo físico.
-
-### Desde línea de comandos
-
-**Windows:**
-
-```bash
-gradlew.bat assembleDebug
-```
-
-**Linux / macOS:**
-
-```bash
-./gradlew assembleDebug
-```
-
-El APK se generará en: `app/build/outputs/apk/debug/`
-
----
-
-## Cómo funciona la calculadora
-
-La lógica de cálculo se encuentra en el archivo `domain/GrlCalculator.kt`. El cálculo se actualiza automáticamente gracias al estado reactivo de Compose.
-
-- **GRL Global**:
-  Se calcula mediante el promedio redondeado al alza de los GRL base (GRL - Rango) de todos los jugadores, sumado al promedio redondeado al alza de los rangos de todos los jugadores.
-
-- **Fórmulas**:
-  - `Promedio GRL Base = ceil(SUMA(GRL - Rango) / N)`
-  - `Promedio Rangos = ceil(SUMA(Rango) / N)`
-  - `GRL FINAL = Promedio GRL Base + Promedio Rangos`
-
-- **Optimización de Mejora**:
-  La aplicación analiza ambos promedios decimales y presenta simultáneamente las dos rutas posibles para subir el GRL global. El sistema resalta automáticamente el camino que requiere menos puntos, permitiendo al usuario comparar y decidir la mejor estrategia para su equipo.
-
----
-
-## Desarrollo y personalización
-
-- **Interfaz**: modifica los componentes en `app/src/main/java/com/kveld9/fcmcalculator/ui/GrlScreen.kt`.
-- **Lógica**: ajusta las fórmulas en `app/src/main/java/com/kveld9/fcmcalculator/domain/GrlCalculator.kt`.
-- **Estética**: cambia colores o formas en `app/src/main/java/com/kveld9/fcmcalculator/ui/theme/`.
+- **Android Studio**: Ladybug / Meerkat o superior.
+- **Android SDK**: `minSdk 24` (Android 7.0+), `targetSdk 35` (Android 15), `compileSdk 37`.
+- **JDK**: Java 17 / 21.
+- **Compilar Debug APK**:
+  ```bash
+  ./gradlew assembleDebug
+  ```
+- **Ejecutar Tests Unitarios**:
+  ```bash
+  ./gradlew testDebugUnitTest
+  ```
 
 ---
 

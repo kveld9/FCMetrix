@@ -22,5 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FCM Calculator"
+rootProject.name = "FCMetrix"
 include(":app")
+include(":baselineprofile")
