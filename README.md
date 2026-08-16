@@ -45,13 +45,18 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
 ## Capturas de pantalla
 
 <p align="center">
-  <img src=".github/screenshots/preview-1.png" alt="FCMetrix 1" width="200" />
-  <img src=".github/screenshots/preview-2.png" alt="FCMetrix 2" width="200" />
-  <img src=".github/screenshots/preview-3.png" alt="FCMetrix 3" width="200" />
-  <img src=".github/screenshots/preview-4.png" alt="FCMetrix 4" width="200" />
-  <img src=".github/screenshots/preview-5.png" alt="FCMetrix 5" width="200" />
-  <img src=".github/screenshots/preview-6.png" alt="FCMetrix 6" width="200" />
-  <img src=".github/screenshots/preview-7.png" alt="FCMetrix 7" width="200" />
+  <img src=".github/screenshots/preview-1.png" alt="FCMetrix - Estado Inicial" width="180" />
+  <img src=".github/screenshots/preview-2.png" alt="FCMetrix - Progreso de Titulares" width="180" />
+  <img src=".github/screenshots/preview-3.png" alt="FCMetrix - Cálculo de GRL y Sugerencias" width="180" />
+  <img src=".github/screenshots/preview-4.png" alt="FCMetrix - Plantilla Completa" width="180" />
+  <img src=".github/screenshots/preview-5.png" alt="FCMetrix - Guardar Plantilla" width="180" />
+</p>
+<p align="center">
+  <img src=".github/screenshots/preview-6.png" alt="FCMetrix - Color Dinámico Material You" width="180" />
+  <img src=".github/screenshots/preview-7.png" alt="FCMetrix - Gestión de Plantillas Guardadas" width="180" />
+  <img src=".github/screenshots/preview-8.png" alt="FCMetrix - Opciones y Ajustes" width="180" />
+  <img src=".github/screenshots/preview-9.png" alt="FCMetrix - Modal Vista Previa (Color Dinámico)" width="180" />
+  <img src=".github/screenshots/preview-10.png" alt="FCMetrix - Modal Vista Previa y Compartir" width="180" />
 </p>
 
 ---
