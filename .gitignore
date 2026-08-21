@@ -1,29 +1,26 @@
-# Gradle
+# Gradle & Build Artifacts
 .gradle/
 build/
 */build/
+.kotlin/
+.artifacts/
+app/release/
+*.apk
+*.aab
 
-# Local configuration
+# Local & User Configuration
 local.properties
-
-# Android Studio
 .idea/
 *.iml
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Android build/native
-captures/
-.externalNativeBuild/
-.cxx/
-
-# Signing / secrets
+# Signing & Secrets
 *.jks
 *.keystore
+*.key
 
-# Release builds
-app/release/
-.artifacts/ 
-.kotlin/ 
+# OS & System
+.DS_Store
+Thumbs.db
+*.log
+*.hprof
+
