@@ -90,7 +90,8 @@ object GrlCalculator {
             puntosParaSubir(sumaRango, n)
         }
 
-        val mejorPuntos = if (pRango != null && pRango < pBase) pRango else pBase
+        val esMejoraPorRango = pRango != null && pRango < pBase
+        val mejorPuntos = if (esMejoraPorRango) pRango else pBase
 
         return Result(
             grlGlobal = avgBase + avgRango,
@@ -102,7 +103,7 @@ object GrlCalculator {
             promedioBase = sumaBase.toDouble() / n,
             promedioRango = sumaRango.toDouble() / n,
             puntosSiguienteGrl = mejorPuntos,
-            esMejoraPorRango = pRango != null && pRango < pBase
+            esMejoraPorRango = esMejoraPorRango
         )
     }
 

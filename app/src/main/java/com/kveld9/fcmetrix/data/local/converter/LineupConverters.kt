@@ -1,7 +1,7 @@
 package com.kveld9.fcmetrix.data.local.converter
 
 import androidx.room.TypeConverter
-import com.kveld9.fcmetrix.ui.model.PlayerData
+import com.kveld9.fcmetrix.domain.model.PlayerData
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

@@ -1,6 +1,6 @@
 package com.kveld9.fcmetrix.data.local.converter
 
-import com.kveld9.fcmetrix.ui.model.PlayerData
+import com.kveld9.fcmetrix.domain.model.PlayerData
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
