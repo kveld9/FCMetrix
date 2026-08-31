@@ -1,4 +1,5 @@
 name: FCMetrix Automated Release Gate & Publisher
+run-name: 🚀 Release ${{ github.ref_name }} by @${{ github.actor }}
 
 on:
   push:

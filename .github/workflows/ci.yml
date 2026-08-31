@@ -1,4 +1,5 @@
 name: FCMetrix CI/CD Quality-Left Gate
+run-name: 🧪 CI Gate on ${{ github.ref_name }} by @${{ github.actor }}
 
 on:
   push:
