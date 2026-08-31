@@ -3,12 +3,12 @@ package com.kveld9.fcmetrix.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -25,34 +25,51 @@ class ThemePreferencesTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private val testScope = TestScope(testDispatcher)
-    
+
     private lateinit var dataStore: DataStore<Preferences>
-    // Note: We'll need a way to inject dataStore into ThemePreferences for testing
-    // or just test the logic if we refactor it.
-    // For now, let's test the logic by creating a DataStore in the test.
-    
+    private lateinit var themePreferences: ThemePreferences
+
     @Before
     fun setup() {
         dataStore = PreferenceDataStoreFactory.create(
             scope = testScope,
             produceFile = { File(tmpFolder.newFolder(), "test_settings.preferences_pb") }
         )
+        themePreferences = ThemePreferences(dataStore)
     }
 
     @Test
-    fun `dynamicColorEnabled - returns false by default`() = runTest(testDispatcher) {
-        val dynamicColor = dataStore.data.first()[ThemePreferences.DYNAMIC_COLOR_KEY] ?: false
-        assertFalse(dynamicColor)
+    fun `default theme settings - returns expected defaults`() = runTest(testDispatcher) {
+        val settings = themePreferences.themeSettings.first()
+        assertTrue(settings.dynamicColor)
+        assertEquals("SYSTEM", settings.themeMode)
+        assertFalse(settings.amoledBlack)
     }
 
     @Test
-    fun `setDynamicColorEnabled - updates preference correctly`() = runTest(testDispatcher) {
-        dataStore.edit { it[ThemePreferences.DYNAMIC_COLOR_KEY] = true }
-        val dynamicColor = dataStore.data.first()[ThemePreferences.DYNAMIC_COLOR_KEY] ?: false
-        assertTrue(dynamicColor)
-        
-        dataStore.edit { it[ThemePreferences.DYNAMIC_COLOR_KEY] = false }
-        val dynamicColorFalse = dataStore.data.first()[ThemePreferences.DYNAMIC_COLOR_KEY] ?: false
-        assertFalse(dynamicColorFalse)
+    fun `setDynamicColor - updates dynamic color preference`() = runTest(testDispatcher) {
+        themePreferences.setDynamicColor(false)
+        assertFalse(themePreferences.themeSettings.first().dynamicColor)
+
+        themePreferences.setDynamicColor(true)
+        assertTrue(themePreferences.themeSettings.first().dynamicColor)
+    }
+
+    @Test
+    fun `setThemeMode - updates theme mode string preference`() = runTest(testDispatcher) {
+        themePreferences.setThemeMode("DARK")
+        assertEquals("DARK", themePreferences.themeSettings.first().themeMode)
+
+        themePreferences.setThemeMode("LIGHT")
+        assertEquals("LIGHT", themePreferences.themeSettings.first().themeMode)
+    }
+
+    @Test
+    fun `setAmoledBlack - updates amoled black preference`() = runTest(testDispatcher) {
+        themePreferences.setAmoledBlack(true)
+        assertTrue(themePreferences.themeSettings.first().amoledBlack)
+
+        themePreferences.setAmoledBlack(false)
+        assertFalse(themePreferences.themeSettings.first().amoledBlack)
     }
 }

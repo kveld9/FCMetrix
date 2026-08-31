@@ -2,7 +2,7 @@ package com.kveld9.fcmetrix.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kveld9.fcmetrix.ui.model.PlayerData
+import com.kveld9.fcmetrix.domain.model.PlayerData
 
 @Entity(tableName = "teams")
 data class TeamEntity(
