@@ -4,6 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue.svg)](https://kotlinlang.org)
 [![Android](https://img.shields.io/badge/Android-minSdk%2024-green.svg)](https://developer.android.com)
 [![FOSS](https://img.shields.io/badge/FOSS-100%25-orange.svg)](https://en.wikipedia.org/wiki/Free_and_open-source_software)
+[![Release](https://img.shields.io/badge/Release-v1.6.0-brightgreen.svg)](https://github.com/kveld9/FCMCalculator/releases)
 
 Calculadora ligera y moderna para Android, diseñada específicamente para calcular y optimizar el **GRL (Global Rating Level)** en **FC Mobile**.
 La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpack Compose (Material 3)** para ofrecer una interfaz nativa, fluida y reactiva.
@@ -19,7 +20,14 @@ La aplicación está desarrollada íntegramente en **Kotlin** utilizando **Jetpa
   - Guarda múltiples alineaciones personalizadas con nombre propio.
   - Carga y alterna entre diferentes plantillas guardadas al instante.
   - Elimina alineaciones con confirmación de seguridad.
-  - Persistencia local mediante **Room Database**.
+  - Persistencia local reactiva mediante **Room Database**.
+- **Copia de Seguridad y Restauración JSON (Backup & Restore)**:
+  - Exporta todas tus plantillas y configuraciones en archivos `.json` portables.
+  - Importa backups de forma segura con validación de esquema y gestión de duplicados.
+- **Pantalla de Ajustes Dedicada (Settings)**:
+  - Control de copias de seguridad locales y restauración.
+  - Opciones de personalización de tema y **Color Dinámico (Material You)**.
+  - Resumen del sistema e información de versión.
 - **Sugerencias inteligentes y caminos de optimización**:
   - Muestra en paralelo las dos vías posibles para subir de nivel: **Vía GRL Base** vs. **Vía Rango**.
   - Identifica y destaca visualmente el **Camino más rápido** para alcanzar el próximo OVR.
@@ -91,16 +99,17 @@ El redondeo hacia arriba ($\lceil x \rceil$ / `ceil`) se aplica de forma indepen
 
 | Tecnología                     | Versión / Uso                                                    |
 | ------------------------------ | ---------------------------------------------------------------- |
-| **Kotlin**                     | Lenguaje principal del proyecto                                  |
+| **Kotlin**                     | Lenguaje principal del proyecto (Kotlin 2.2.10)                  |
 | **Jetpack Compose**            | UI declarativa moderna basada en **Material 3**                  |
 | **Room Database**              | Persistencia SQLite local para alineaciones guardadas            |
 | **DataStore Preferences**      | Almacenamiento reactivo de configuraciones (Color Dinámico)      |
-| **Kotlinx Serialization**      | Serialización JSON segura para entidades y listas                |
+| **Kotlinx Serialization**      | Serialización JSON segura para copias de seguridad portables     |
 | **Kotlin Coroutines & Flow**   | Programación asíncrona reactiva con `StateFlow`                  |
 | **AndroidX Lifecycle**         | Arquitectura `ViewModel` con retención de estado                 |
 | **KSP**                        | Kotlin Symbol Processing para Room y generadores de código       |
 | **Baseline Profiles**          | Precompilación de rutas críticas para inicio y render ultra-rápido |
 | **JUnit 4 & Espresso**         | Pruebas unitarias e instrumentadas automatizadas                 |
+| **GitHub Actions CI/CD**       | Automatización de Quality Gates, tests, lint y releases firmadas |
 | **Gradle (Kotlin DSL)**        | Sistema de compilación y gestión de dependencias                 |
 
 ---
@@ -114,9 +123,17 @@ El redondeo hacia arriba ($\lceil x \rceil$ / `ceil`) se aplica de forma indepen
   ```bash
   ./gradlew assembleDebug
   ```
+- **Compilar Release APK**:
+  ```bash
+  ./gradlew assembleRelease
+  ```
 - **Ejecutar Tests Unitarios**:
   ```bash
   ./gradlew testDebugUnitTest
+  ```
+- **Sincronizar Harness de Agentes**:
+  ```bash
+  ./gradlew syncHarness
   ```
 
 ---
