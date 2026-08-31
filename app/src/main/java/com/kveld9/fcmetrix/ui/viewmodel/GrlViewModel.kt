@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.kveld9.fcmetrix.data.LineupRepository
 import com.kveld9.fcmetrix.data.local.entity.TeamEntity
 import com.kveld9.fcmetrix.domain.GrlCalculator
+import com.kveld9.fcmetrix.domain.model.PlayerData
 import com.kveld9.fcmetrix.ui.model.GrlUiState
-import com.kveld9.fcmetrix.ui.model.PlayerData
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -70,22 +70,8 @@ class GrlViewModel(private val repository: LineupRepository) : ViewModel() {
 
     fun onRangoChanged(playerId: String, newRango: String) {
         updatePlayer(playerId) { player ->
-            if (newRango.isEmpty()) {
-                val updatedGrlInt = GrlCalculator.ajustarGrlPorRango(
-                    grlActual = player.grl.toIntOrNull(),
-                    rangoActual = player.rango.toIntOrNull() ?: 0,
-                    nuevoRango = 0
-                )
-                return@updatePlayer player.copy(rango = "", grl = updatedGrlInt?.toString() ?: player.grl)
-            }
-
-            val saneado = sanearRango(newRango)
-            val updatedGrlInt = GrlCalculator.ajustarGrlPorRango(
-                grlActual = player.grl.toIntOrNull(),
-                rangoActual = player.rango.toIntOrNull() ?: 0,
-                nuevoRango = saneado.toIntOrNull() ?: 0
-            )
-            player.copy(rango = saneado, grl = updatedGrlInt?.toString() ?: player.grl)
+            val rankToApply = if (newRango.isEmpty()) "" else sanearRango(newRango)
+            player.applyRank(rankToApply)
         }
     }
 
@@ -162,20 +148,8 @@ class GrlViewModel(private val repository: LineupRepository) : ViewModel() {
     private fun updatePlayer(playerId: String, transform: (PlayerData) -> PlayerData) {
         _uiState.update { state ->
             val isTitular = state.titulares.any { it.id == playerId }
-            val newTitulares: List<PlayerData>
-            val newSuplentes: List<PlayerData>
-
-            if (isTitular) {
-                newTitulares = state.titulares.map { 
-                    if (it.id == playerId) transform(it) else it 
-                }
-                newSuplentes = state.suplentes
-            } else {
-                newTitulares = state.titulares
-                newSuplentes = state.suplentes.map { 
-                    if (it.id == playerId) transform(it) else it 
-                }
-            }
+            val newTitulares = if (isTitular) state.titulares.updateById(playerId, transform) else state.titulares
+            val newSuplentes = if (!isTitular) state.suplentes.updateById(playerId, transform) else state.suplentes
 
             state.copy(
                 titulares = newTitulares,
@@ -184,6 +158,9 @@ class GrlViewModel(private val repository: LineupRepository) : ViewModel() {
             )
         }
     }
+
+    private fun List<PlayerData>.updateById(id: String, transform: (PlayerData) -> PlayerData): List<PlayerData> =
+        map { if (it.id == id) transform(it) else it }
 
     private fun calculateResult(titulares: List<PlayerData>, suplentes: List<PlayerData>): GrlCalculator.Result {
         return GrlCalculator.calcular(
@@ -207,31 +184,19 @@ class GrlViewModel(private val repository: LineupRepository) : ViewModel() {
     }
 
     // region Lógica de Saneamiento (UI Clamping)
-    private fun sanearGrl(input: String): String {
-        if (input.isBlank()) return ""
+    private fun sanitizeBoundedInt(input: String, min: Int, max: Int, defaultIfEmpty: String): String {
+        if (input.isBlank()) return defaultIfEmpty
         val numeric = input.trim().filterIndexed { i, c ->
             c.isDigit() || (i == 0 && c == '-')
-        }.toIntOrNull() ?: return ""
-        
-        return when {
-            numeric < GrlCalculator.GRL_MIN -> GrlCalculator.GRL_MIN.toString()
-            numeric > GrlCalculator.GRL_MAX -> GrlCalculator.GRL_MAX.toString()
-            else -> numeric.toString()
-        }
+        }.toIntOrNull() ?: return defaultIfEmpty
+        return numeric.coerceIn(min, max).toString()
     }
 
-    private fun sanearRango(input: String): String {
-        if (input.isBlank()) return "0"
-        val numeric = input.trim().filterIndexed { i, c ->
-            c.isDigit() || (i == 0 && c == '-')
-        }.toIntOrNull() ?: return "0"
-        
-        return when {
-            numeric < GrlCalculator.RANGO_MIN -> GrlCalculator.RANGO_MIN.toString()
-            numeric > GrlCalculator.RANGO_MAX -> GrlCalculator.RANGO_MAX.toString()
-            else -> numeric.toString()
-        }
-    }
+    private fun sanearGrl(input: String): String =
+        sanitizeBoundedInt(input, GrlCalculator.GRL_MIN, GrlCalculator.GRL_MAX, defaultIfEmpty = "")
+
+    private fun sanearRango(input: String): String =
+        sanitizeBoundedInt(input, GrlCalculator.RANGO_MIN, GrlCalculator.RANGO_MAX, defaultIfEmpty = "0")
     // endregion
 }
 

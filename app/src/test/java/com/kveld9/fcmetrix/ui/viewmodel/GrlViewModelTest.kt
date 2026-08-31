@@ -4,7 +4,7 @@ import com.kveld9.fcmetrix.data.LineupRepository
 import com.kveld9.fcmetrix.data.local.dao.LineupDao
 import com.kveld9.fcmetrix.data.local.entity.TeamEntity
 import com.kveld9.fcmetrix.domain.GrlCalculator
-import com.kveld9.fcmetrix.ui.model.PlayerData
+import com.kveld9.fcmetrix.domain.model.PlayerData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -53,12 +53,19 @@ class GrlViewModelTest {
         private val teams = MutableStateFlow<Map<String, TeamEntity>>(emptyMap())
 
         override fun getAllTeams(): Flow<List<TeamEntity>> = MutableStateFlow(teams.value.values.toList())
+        override suspend fun getAllTeamsSync(): List<TeamEntity> = teams.value.values.toList()
         override suspend fun getTeamById(id: String): TeamEntity? = teams.value[id]
         override suspend fun insertTeam(team: TeamEntity) {
             teams.value = teams.value + (team.id to team)
         }
+        override suspend fun insertTeams(teams: List<TeamEntity>) {
+            this.teams.value = this.teams.value + teams.associateBy { it.id }
+        }
         override suspend fun deleteTeam(id: String) {
             teams.value = teams.value - id
+        }
+        override suspend fun deleteAllTeams() {
+            teams.value = emptyMap()
         }
     }
     // endregion

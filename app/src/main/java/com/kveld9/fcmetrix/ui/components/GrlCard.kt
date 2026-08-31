@@ -1,5 +1,15 @@
 package com.kveld9.fcmetrix.ui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +30,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.testTag
@@ -170,18 +183,28 @@ private fun CompleteSquadResult(result: GrlCalculator.Result) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.height(156.dp)
     ) {
-        Text(
-            text = (result.grlGlobal ?: "--").toString(),
-            style = TextStyle(
-                fontSize = 100.sp,
-                fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.primary,
-                lineHeight = 100.sp,
-                fontFamily = FontFamily.Monospace,
-                textAlign = TextAlign.Center
-            ),
-            modifier = Modifier.testTag("grl_global_value")
-        )
+        AnimatedContent(
+            targetState = result.grlGlobal,
+            transitionSpec = {
+                (slideInVertically(animationSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)) { height -> height / 3 } + fadeIn())
+                    .togetherWith(slideOutVertically(animationSpec = spring(stiffness = Spring.StiffnessLow)) { height -> -height / 3 } + fadeOut())
+            },
+            label = "grl_global_anim"
+        ) { targetGrl ->
+            Text(
+                text = (targetGrl ?: "--").toString(),
+                style = TextStyle(
+                    fontSize = 100.sp,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.primary,
+                    lineHeight = 100.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontFeatureSettings = "tnum",
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier.testTag("grl_global_value")
+            )
+        }
         DetailRow(base = result.promedioBase, rank = result.promedioRango)
     }
 }
@@ -193,7 +216,7 @@ private fun IncompleteSquadTracker(titularesCargados: Int) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.height(156.dp)
     ) {
-        // 11 Orbes tácticos representando la alineación
+        // 11 Orbes tácticos animados representando la alineación
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -201,18 +224,48 @@ private fun IncompleteSquadTracker(titularesCargados: Int) {
         ) {
             (0 until 11).forEach { index ->
                 val isFilled = index < titularesCargados
+                val targetColor = if (isFilled) MaterialTheme.colorScheme.primary 
+                                  else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                val animatedColor by animateColorAsState(
+                    targetValue = targetColor,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    ),
+                    label = "orb_color_$index"
+                )
+                val targetBorderColor = if (isFilled) MaterialTheme.colorScheme.primary 
+                                        else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+                val animatedBorderColor by animateColorAsState(
+                    targetValue = targetBorderColor,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    ),
+                    label = "orb_border_$index"
+                )
+                val targetScale = if (isFilled) 1.15f else 1.0f
+                val animatedScale by animateFloatAsState(
+                    targetValue = targetScale,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    ),
+                    label = "orb_scale_$index"
+                )
+
                 Box(
                     modifier = Modifier
                         .size(10.dp)
+                        .graphicsLayer {
+                            scaleX = animatedScale
+                            scaleY = animatedScale
+                        }
                         .clip(CircleShape)
-                        .background(
-                            if (isFilled) MaterialTheme.colorScheme.primary 
-                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-                        )
+                        .background(animatedColor)
                         .border(
                             width = 1.dp,
-                            color = if (isFilled) MaterialTheme.colorScheme.primary 
-                                    else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                            color = animatedBorderColor,
                             shape = CircleShape
                         )
                 )
@@ -235,6 +288,13 @@ private fun DetailRow(base: Double?, rank: Double?) {
     val labelText = stringResource(R.string.base_avg_label)
     val rankText = stringResource(R.string.rank_avg_label)
     
+    val baseFormatted = remember(base) {
+        if (base != null) String.format(java.util.Locale.US, "%.2f", base) else "--"
+    }
+    val rankFormatted = remember(rank) {
+        if (rank != null) String.format(java.util.Locale.US, "%.2f", rank) else "--"
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -248,20 +308,17 @@ private fun DetailRow(base: Double?, rank: Double?) {
         val styleValue = SpanStyle(
             color = if (base != null) colorOnSurface.copy(alpha = 0.8f) else colorOnSurface.copy(alpha = 0.2f),
             fontWeight = FontWeight.Bold,
-            fontSize = 12.sp
+            fontSize = 12.sp,
+            fontFeatureSettings = "tnum"
         )
 
         Text(
             text = buildAnnotatedString {
                 withStyle(styleLabel) { append("$labelText ") }
-                withStyle(styleValue) { 
-                    append(if (base != null) String.format(java.util.Locale.US, "%.2f", base) else "--")
-                }
+                withStyle(styleValue) { append(baseFormatted) }
                 withStyle(styleLabel) { append("  •  ") }
                 withStyle(styleLabel) { append("$rankText ") }
-                withStyle(styleValue) { 
-                    append(if (rank != null) String.format(java.util.Locale.US, "%.2f", rank) else "--")
-                }
+                withStyle(styleValue) { append(rankFormatted) }
             }
         )
     }
@@ -388,14 +445,17 @@ private fun PathColumn(
         
         Text(
             text = pointsText,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = when {
-                isCompleted -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                isFastest -> MaterialTheme.colorScheme.primary
-                else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-            },
-            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontSize = 13.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = when {
+                    isCompleted -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                    isFastest -> MaterialTheme.colorScheme.primary
+                    else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                },
+                textAlign = TextAlign.Center,
+                fontFeatureSettings = "tnum"
+            ),
             modifier = Modifier.padding(top = 2.dp)
         )
 

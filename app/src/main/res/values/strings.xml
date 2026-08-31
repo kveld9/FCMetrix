@@ -5,6 +5,9 @@
     <string name="clear_all">CLEAR</string>
     <string name="save_action">SAVE</string>
     <string name="team">TEAM</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
 
     <!-- Header -->
     <string name="header_title">OVR Calculator</string>
@@ -12,13 +15,10 @@
 
     <!-- Results Card -->
     <string name="grl_global">GLOBAL OVR</string>
-    <string name="missing_players">Missing %1$d players</string>
     <string name="players_ready_count">%1$d of 11 players ready</string>
     <string name="missing_players_to_calc">Missing %1$d players to calculate</string>
-    <string name="rank_max_reached">✓ Max rank contribution reached</string>
     <string name="base_avg_label">Base</string>
     <string name="rank_avg_label">Rank</string>
-    <string name="recommended_label">Recommended</string>
     <string name="rank_path">RANK PATH</string>
     <string name="base_path">BASE PATH</string>
     <string name="fastest_label">FASTEST</string>
@@ -35,13 +35,10 @@
     <string name="no_substitutes">No substitutes</string>
     <string name="grl_label">OVR</string>
     <string name="rank_label">Rank</string>
-    <string name="remove">Remove</string>
     <string name="add_substitute">+ SUBSTITUTE</string>
     <string name="manage_teams_title">Manage Teams</string>
     <string name="new_team_name_label">New Team Name</string>
     <string name="no_saved_teams">No saved squads yet. Save your current squad above.</string>
-    <string name="load_desc">Load team</string>
-    <string name="delete_desc">Delete team</string>
     <string name="confirm_delete_team_title">Delete Team</string>
     <string name="confirm_delete_team_message">Are you sure you want to delete \"%1$s\"?</string>
     <string name="cancel_action">Cancel</string>
@@ -53,6 +50,40 @@
     <string name="download_action">Download</string>
     <string name="save_success">Image saved to gallery</string>
     <string name="save_error">Error saving image</string>
+
+    <!-- Settings - Appearance -->
+    <string name="section_appearance">Appearance</string>
+    <string name="setting_theme_title">Theme</string>
+    <string name="theme_mode_system">System</string>
+    <string name="theme_mode_dark">Dark</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="setting_dynamic_color_title">Dynamic Color (Monet)</string>
+    <string name="setting_dynamic_color_desc">Tint interface using wallpaper colors on Android 12+</string>
+    <string name="setting_amoled_title">Pure Black Mode (AMOLED)</string>
+    <string name="setting_amoled_desc">Absolute black background (#000000) in dark mode for higher contrast and battery savings</string>
+
+    <!-- Settings - Backup -->
+    <string name="section_backup">Backup &amp; Portability</string>
+    <string name="setting_export_backup_title">Export Squads</string>
+    <string name="setting_export_backup_desc">Save all squads into a portable JSON backup file</string>
+    <string name="setting_import_backup_title">Import Squads</string>
+    <string name="setting_import_backup_desc">Restore squads from a JSON backup file</string>
+    <string name="toast_backup_exported_success">Backup exported successfully</string>
+    <string name="toast_backup_export_error">Error exporting backup: %1$s</string>
+    <string name="toast_backup_read_error">Error reading backup: %1$s</string>
+    <string name="toast_import_success">Imported %1$d squads (%2$d skipped)</string>
+    <string name="toast_import_error">Import error: %1$s</string>
+    <string name="duplicate_policy_title">Import Options</string>
+    <string name="duplicate_policy_prompt">How do you want to handle squads with the same ID or name?</string>
+    <string name="duplicate_policy_skip">Skip existing squads</string>
+    <string name="duplicate_policy_overwrite">Overwrite existing squads</string>
+    <string name="duplicate_policy_allow_duplicates">Import as new copies</string>
+
+    <!-- Settings - About -->
+    <string name="app_version_info">FCMetrix v%1$s</string>
+    <string name="app_author_info">Developed with ❤️ by %1$s</string>
+    <string name="app_tagline">100% Offline • No Telemetry • Complete Privacy</string>
+    <string name="view_on_github">View on GitHub (%1$s)</string>
 
     <!-- Accessibility / TalkBack -->
     <string name="desc_grl_card_complete">Global OVR %1$d. Base average %2$s, Rank average %3$s.</string>
@@ -69,8 +100,4 @@
     <!-- Feedback -->
     <string name="clamping_grl">OVR adjusted to legal limits (%1$d - %2$d)</string>
     <string name="clamping_rank">Rank adjusted to legal limits (%1$d - %2$d)</string>
-
-    <!-- Footer -->
-    <string name="made_by">MADE BY @KVELD9</string>
-    <string name="open_source_label">FREE &amp; OPEN SOURCE</string>
 </resources>
