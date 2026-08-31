@@ -1,0 +1,144 @@
+name: FCMetrix Automated Release Gate & Publisher
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-release:
+    name: Build, Verify, Checksum & Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Codebase (Full History)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Verify Harness Synchronization (Drift Check)
+        run: |
+          ./gradlew syncHarness
+          git diff --exit-code AGENTS.md || (echo "Harness out of sync! Run ./gradlew syncHarness before tagging." && exit 1)
+
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --continue
+
+      - name: Run Android Lint
+        run: ./gradlew lintDebug
+
+      - name: Assemble Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Sign & Prepare Release APK
+        env:
+          SIGNING_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          OUTPUT_DIR="app/build/outputs/apk/release"
+          TARGET_APK="FCMetrix-${TAG_NAME}.apk"
+
+          RAW_APK=$(find $OUTPUT_DIR -name "*.apk" | head -n 1)
+          if [ -z "$RAW_APK" ]; then
+            echo "ERROR: No se encontró ningún APK en $OUTPUT_DIR"
+            exit 1
+          fi
+
+          if [ -n "$SIGNING_KEY" ]; then
+            echo "Firmando APK con keystore de producción..."
+            echo "$SIGNING_KEY" | base64 -d > keystore.jks
+            $ANDROID_HOME/build-tools/35.0.0/apksigner sign --ks keystore.jks \
+              --ks-key-alias "$KEY_ALIAS" \
+              --ks-pass "pass:$KEYSTORE_PASSWORD" \
+              --key-pass "pass:$KEY_PASSWORD" \
+              --out "$TARGET_APK" "$RAW_APK"
+            rm -f keystore.jks
+          else
+            echo "AVISO: No se encontraron secrets de producción. Firmando con debug key..."
+            mkdir -p ~/.android
+            if [ ! -f ~/.android/debug.keystore ]; then
+              keytool -genkey -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            fi
+            $ANDROID_HOME/build-tools/35.0.0/apksigner sign --ks ~/.android/debug.keystore \
+              --ks-pass pass:android \
+              --key-pass pass:android \
+              --out "$TARGET_APK" "$RAW_APK"
+          fi
+
+          echo "APK_FILE=$TARGET_APK" >> $GITHUB_ENV
+
+      - name: Generate Multi-Hash Checksums
+        run: |
+          APK="${{ env.APK_FILE }}"
+          CHECKSUM_FILE="checksums-${{ github.ref_name }}.txt"
+
+          echo "==================================================" > "$CHECKSUM_FILE"
+          echo " FCMetrix ${{ github.ref_name }} — Integrity Hashes" >> "$CHECKSUM_FILE"
+          echo "==================================================" >> "$CHECKSUM_FILE"
+          echo "" >> "$CHECKSUM_FILE"
+
+          echo "## SHA-256" >> "$CHECKSUM_FILE"
+          sha256sum "$APK" >> "$CHECKSUM_FILE"
+          echo "" >> "$CHECKSUM_FILE"
+
+          echo "## SHA-512" >> "$CHECKSUM_FILE"
+          sha512sum "$APK" >> "$CHECKSUM_FILE"
+          echo "" >> "$CHECKSUM_FILE"
+
+          echo "## MD5" >> "$CHECKSUM_FILE"
+          md5sum "$APK" >> "$CHECKSUM_FILE"
+
+          sha256sum "$APK" > "${APK}.sha256"
+
+          echo "CHECKSUM_FILE=$CHECKSUM_FILE" >> $GITHUB_ENV
+
+      - name: Generate Detailed Commit Changelog
+        id: changelog
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "### 📦 Changelog Detallado de Commits" > changelog.md
+          echo "" >> changelog.md
+
+          if [ -z "$PREV_TAG" ]; then
+            echo "**Primer release o sin tags previos detectados.** Lista completa de commits:" >> changelog.md
+            git log --pretty=format:"* %s ([%h](https://github.com/${{ github.repository }}/commit/%H)) - @%an" >> changelog.md
+          else
+            echo "Cambios introducidos desde **$PREV_TAG** hasta **${{ github.ref_name }}**:" >> changelog.md
+            echo "" >> changelog.md
+            git log ${PREV_TAG}..HEAD --pretty=format:"* %s ([%h](https://github.com/${{ github.repository }}/commit/%H)) - @%an" >> changelog.md
+          fi
+          echo "" >> changelog.md
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "FCMetrix ${{ github.ref_name }}"
+          body_path: changelog.md
+          generate_release_notes: true
+          files: |
+            ${{ env.APK_FILE }}
+            ${{ env.CHECKSUM_FILE }}
+            ${{ env.APK_FILE }}.sha256
