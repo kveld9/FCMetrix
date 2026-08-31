@@ -1,26 +1,70 @@
-# Gradle & Build Artifacts
+# ==============================================================================
+# GRADLE & BUILD ARTIFACTS
+# ==============================================================================
 .gradle/
 build/
 */build/
 .kotlin/
 .artifacts/
+release/
+*/release/
 app/release/
 *.apk
+*.ap_
 *.aab
+*.dex
+*.class
 
-# Local & User Configuration
-local.properties
+# C/C++ & Native Build
+.cxx/
+.externalNativeBuild/
+
+# KSP Generated Files
+ksp/
+*/ksp/
+
+# ==============================================================================
+# IDE & WORKSPACE CONFIGURATION
+# ==============================================================================
 .idea/
 *.iml
+*.iws
+*.ipr
+.vscode/
+out/
 
-# Signing & Secrets
+# Android Studio Local Environment
+local.properties
+.navigation/
+captures/
+
+# ==============================================================================
+# SECURITY & SIGNING SECRETS
+# ==============================================================================
 *.jks
 *.keystore
 *.key
+*.pem
+*.p12
+google-services.json
 
-# OS & System
-.DS_Store
-Thumbs.db
-*.log
+# ==============================================================================
+# DIAGNOSTICS & MEMORY DUMPS
+# ==============================================================================
 *.hprof
+*.log
+*.log.*
+hs_err_pid*
+replay_pid*
 
+# ==============================================================================
+# OPERATING SYSTEM & ENVIRONMENT
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
