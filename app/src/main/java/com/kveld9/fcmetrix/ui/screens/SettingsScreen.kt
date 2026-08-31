@@ -67,6 +67,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kveld9.fcmetrix.BuildConfig
 import com.kveld9.fcmetrix.R
 import com.kveld9.fcmetrix.data.backup.DuplicatePolicy
 import com.kveld9.fcmetrix.ui.viewmodel.SettingsUiEvent
@@ -406,7 +407,7 @@ fun SettingsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(R.string.app_version_info, "1.6"),
+                        text = stringResource(R.string.app_version_info, BuildConfig.VERSION_NAME),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
