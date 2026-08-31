@@ -21,7 +21,8 @@ Write-Host "Scanning project dependencies and configuration..." -ForegroundColor
 # 1. Parse libs.versions.toml
 $TomlContent = Get-Content $TomlPath -Raw
 function Get-TomlVersion($Key) {
-    if ($TomlContent -match "(?m)^\s*$Key\s*=\s*[`"']([^`"']+)`"'") {
+    $regex = '(?m)^\s*' + [regex]::Escape($Key) + '\s*=\s*["'']([^"'']+)["'']'
+    if ($TomlContent -match $regex) {
         return $matches[1]
     }
     return "UNKNOWN"
@@ -52,24 +53,36 @@ if ($JvmTarget -eq "UNKNOWN") {
 }
 
 # 3. Construct updated Section 1
-$NewSection1 = @"
+$Template = @'
 ## 1. IDENTITY AND OBSERVED STACK
 
 - **Product**: FCMetrix — OVR / GRL (Global Rating Level) calculator and optimizer for FC Mobile.
-- **Language**: Kotlin $KotlinVer (JVM Target $JvmTarget / JVM 24-25 compatible).
-- **Platform / Runtime**: Android SDK (``minSdk $MinSdk``, ``targetSdk $TargetSdk``, ``compileSdk $CompileSdk``).
-- **UI Framework**: Jetpack Compose (Material 3), Compose BOM ``$ComposeBomVer``.
-- **Persistence**: Local SQLite via Room Database ``$RoomVer`` with KSP (``LineupDatabase``, ``LineupDao``, ``TeamEntity``).
-- **Preferences**: DataStore Preferences ``$DataStoreVer`` (``ThemePreferences``).
-- **Serialization**: Kotlinx Serialization JSON ``$SerializationVer`` (``LineupConverters``, ``JsonBackupManager``).
-- **Concurrency**: Kotlin Coroutines & Flow (``StateFlow``, ``Dispatchers.IO``).
+- **Language**: Kotlin __KOTLIN__ (JVM Target __JVM__ / JVM 24-25 compatible).
+- **Platform / Runtime**: Android SDK (`minSdk __MINSDK__`, `targetSdk __TARGETSDK__`, `compileSdk __COMPILESDK__`).
+- **UI Framework**: Jetpack Compose (Material 3), Compose BOM `__COMPOSEBOM__`.
+- **Persistence**: Local SQLite via Room Database `__ROOM__` with KSP (`LineupDatabase`, `LineupDao`, `TeamEntity`).
+- **Preferences**: DataStore Preferences `__DATASTORE__` (`ThemePreferences`).
+- **Serialization**: Kotlinx Serialization JSON `__SERIALIZATION__` (`LineupConverters`, `JsonBackupManager`).
+- **Concurrency**: Kotlin Coroutines & Flow (`StateFlow`, `Dispatchers.IO`).
 - **Architecture**: Unidirectional Reactive MVVM (UDF) structured into clean layers:
-  - ``domain``: Pure calculation logic (``GrlCalculator.kt``) without Android framework dependencies.
-  - ``data``: Repositories, backups, and local persistence (``LineupRepository.kt``, ``data/backup/``, ``local/``, ``ThemePreferences.kt``).
-  - ``ui``: Jetpack Compose components, screens, theme, and ``GrlViewModel.kt``.
-- **Build System**: Gradle (AGP ``$AgpVer``, Kotlin DSL: ``build.gradle.kts``, ``app/build.gradle.kts``, ``gradle/libs.versions.toml``).
-- **Performance**: AndroidX Baseline Profiles (``:baselineprofile``).
-"@
+  - `domain`: Pure calculation logic (`GrlCalculator.kt`) without Android framework dependencies.
+  - `data`: Repositories, backups, and local persistence (`LineupRepository.kt`, `data/backup/`, `local/`, `ThemePreferences.kt`).
+  - `ui`: Jetpack Compose components, screens, theme, and `GrlViewModel.kt`.
+- **Build System**: Gradle (AGP `__AGP__`, Kotlin DSL: `build.gradle.kts`, `app/build.gradle.kts`, `gradle/libs.versions.toml`).
+- **Performance**: AndroidX Baseline Profiles (`:baselineprofile`).
+'@
+
+$NewSection1 = $Template
+$NewSection1 = $NewSection1.Replace("__KOTLIN__", $KotlinVer)
+$NewSection1 = $NewSection1.Replace("__JVM__", $JvmTarget)
+$NewSection1 = $NewSection1.Replace("__MINSDK__", $MinSdk)
+$NewSection1 = $NewSection1.Replace("__TARGETSDK__", $TargetSdk)
+$NewSection1 = $NewSection1.Replace("__COMPILESDK__", $CompileSdk)
+$NewSection1 = $NewSection1.Replace("__COMPOSEBOM__", $ComposeBomVer)
+$NewSection1 = $NewSection1.Replace("__ROOM__", $RoomVer)
+$NewSection1 = $NewSection1.Replace("__DATASTORE__", $DataStoreVer)
+$NewSection1 = $NewSection1.Replace("__SERIALIZATION__", $SerializationVer)
+$NewSection1 = $NewSection1.Replace("__AGP__", $AgpVer)
 
 # 4. Patch AGENTS.md
 $AgentsContent = Get-Content $AgentsMdPath -Raw
