@@ -7,18 +7,18 @@
 ## 1. IDENTITY AND OBSERVED STACK
 
 - **Product**: FCMetrix — OVR / GRL (Global Rating Level) calculator and optimizer for FC Mobile.
-- **Language**: Kotlin UNKNOWN (JVM Target 11 / JVM 24-25 compatible).
+- **Language**: Kotlin 2.2.10 (JVM Target 11 / JVM 24-25 compatible).
 - **Platform / Runtime**: Android SDK (`minSdk 24`, `targetSdk 35`, `compileSdk 37`).
-- **UI Framework**: Jetpack Compose (Material 3), Compose BOM `UNKNOWN`.
-- **Persistence**: Local SQLite via Room Database `UNKNOWN` with KSP (`LineupDatabase`, `LineupDao`, `TeamEntity`).
-- **Preferences**: DataStore Preferences `UNKNOWN` (`ThemePreferences`).
-- **Serialization**: Kotlinx Serialization JSON `UNKNOWN` (`LineupConverters`, `JsonBackupManager`).
+- **UI Framework**: Jetpack Compose (Material 3), Compose BOM `2026.06.00`.
+- **Persistence**: Local SQLite via Room Database `2.8.4` with KSP (`LineupDatabase`, `LineupDao`, `TeamEntity`).
+- **Preferences**: DataStore Preferences `1.1.1` (`ThemePreferences`).
+- **Serialization**: Kotlinx Serialization JSON `1.11.0` (`LineupConverters`, `JsonBackupManager`).
 - **Concurrency**: Kotlin Coroutines & Flow (`StateFlow`, `Dispatchers.IO`).
 - **Architecture**: Unidirectional Reactive MVVM (UDF) structured into clean layers:
   - `domain`: Pure calculation logic (`GrlCalculator.kt`) without Android framework dependencies.
   - `data`: Repositories, backups, and local persistence (`LineupRepository.kt`, `data/backup/`, `local/`, `ThemePreferences.kt`).
   - `ui`: Jetpack Compose components, screens, theme, and `GrlViewModel.kt`.
-- **Build System**: Gradle (AGP `UNKNOWN`, Kotlin DSL: `build.gradle.kts`, `app/build.gradle.kts`, `gradle/libs.versions.toml`).
+- **Build System**: Gradle (AGP `9.3.1`, Kotlin DSL: `build.gradle.kts`, `app/build.gradle.kts`, `gradle/libs.versions.toml`).
 - **Performance**: AndroidX Baseline Profiles (`:baselineprofile`).
 
 ## 2. MODES OF OPERATION (MODE)
