@@ -5,6 +5,9 @@
     <string name="clear_all">LIMPIAR</string>
     <string name="save_action">GUARDAR</string>
     <string name="team">EQUIPO</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_back">Volver</string>
+    <string name="action_cancel">Cancelar</string>
 
     <!-- Header -->
     <string name="header_title">Calculadora de GRL</string>
@@ -12,13 +15,10 @@
 
     <!-- Results Card -->
     <string name="grl_global">GRL GLOBAL</string>
-    <string name="missing_players">Faltan %1$d jugadores</string>
     <string name="players_ready_count">%1$d de 11 jugadores listos</string>
     <string name="missing_players_to_calc">Faltan %1$d jugadores para calcular</string>
-    <string name="rank_max_reached">✓ Contribución de rango máxima alcanzada</string>
     <string name="base_avg_label">Base</string>
     <string name="rank_avg_label">Rango</string>
-    <string name="recommended_label">Recomendado</string>
     <string name="rank_path">VÍA RANGO</string>
     <string name="base_path">VÍA GRL BASE</string>
     <string name="fastest_label">MÁS RÁPIDO</string>
@@ -35,13 +35,10 @@
     <string name="no_substitutes">Sin suplentes</string>
     <string name="grl_label">GRL</string>
     <string name="rank_label">Rango</string>
-    <string name="remove">Eliminar</string>
     <string name="add_substitute">+ SUPLENTE</string>
     <string name="manage_teams_title">Gestión de Plantillas</string>
     <string name="new_team_name_label">Nombre de la plantilla</string>
     <string name="no_saved_teams">No hay plantillas guardadas aún. Guarda tu alineación actual arriba.</string>
-    <string name="load_desc">Cargar plantilla</string>
-    <string name="delete_desc">Eliminar plantilla</string>
     <string name="confirm_delete_team_title">Eliminar plantilla</string>
     <string name="confirm_delete_team_message">¿Estás seguro de que deseas eliminar \"%1$s\"?</string>
     <string name="cancel_action">Cancelar</string>
@@ -53,6 +50,40 @@
     <string name="download_action">Descargar</string>
     <string name="save_success">Imagen guardada en la galería</string>
     <string name="save_error">Error al guardar la imagen</string>
+
+    <!-- Settings - Appearance -->
+    <string name="section_appearance">Apariencia</string>
+    <string name="setting_theme_title">Tema</string>
+    <string name="theme_mode_system">Sistema</string>
+    <string name="theme_mode_dark">Oscuro</string>
+    <string name="theme_mode_light">Claro</string>
+    <string name="setting_dynamic_color_title">Color Dinámico (Monet)</string>
+    <string name="setting_dynamic_color_desc">Tonos del fondo de pantalla en Android 12+</string>
+    <string name="setting_amoled_title">Modo Negro Puro (AMOLED)</string>
+    <string name="setting_amoled_desc">Fondo negro absoluto (#000000) en modo oscuro para mayor contraste y ahorro de batería</string>
+
+    <!-- Settings - Backup -->
+    <string name="section_backup">Copia de Seguridad y Portabilidad</string>
+    <string name="setting_export_backup_title">Exportar Plantillas</string>
+    <string name="setting_export_backup_desc">Guardar todas las plantillas en un archivo JSON portátil</string>
+    <string name="setting_import_backup_title">Importar Plantillas</string>
+    <string name="setting_import_backup_desc">Restaurar plantillas desde un archivo de respaldo JSON</string>
+    <string name="toast_backup_exported_success">Copia de seguridad exportada con éxito</string>
+    <string name="toast_backup_export_error">Error al exportar: %1$s</string>
+    <string name="toast_backup_read_error">Error al leer el archivo: %1$s</string>
+    <string name="toast_import_success">Se importaron %1$d plantillas (%2$d omitidas)</string>
+    <string name="toast_import_error">Error de importación: %1$s</string>
+    <string name="duplicate_policy_title">Opciones de Importación</string>
+    <string name="duplicate_policy_prompt">¿Cómo deseas manejar las plantillas existentes con el mismo nombre o ID?</string>
+    <string name="duplicate_policy_skip">Omitir plantillas existentes</string>
+    <string name="duplicate_policy_overwrite">Sobrescribir plantillas existentes</string>
+    <string name="duplicate_policy_allow_duplicates">Importar como copias nuevas</string>
+
+    <!-- Settings - About -->
+    <string name="app_version_info">FCMetrix v%1$s</string>
+    <string name="app_author_info">Desarrollado con ❤️ por %1$s</string>
+    <string name="app_tagline">100% Offline • No Telemetry • Complete Privacy</string>
+    <string name="view_on_github">Ver en GitHub (%1$s)</string>
 
     <!-- Accessibility / TalkBack -->
     <string name="desc_grl_card_complete">GRL global %1$d. Promedio de base %2$s, promedio de rango %3$s.</string>
@@ -69,8 +100,4 @@
     <!-- Feedback -->
     <string name="clamping_grl">GRL ajustado al límite legal (%1$d - %2$d)</string>
     <string name="clamping_rank">Rango ajustado al límite legal (%1$d - %2$d)</string>
-
-    <!-- Footer -->
-    <string name="made_by">CREADO POR @KVELD9</string>
-    <string name="open_source_label">GRATIS Y OPEN SOURCE</string>
 </resources>

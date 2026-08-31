@@ -1,6 +1,10 @@
 package com.kveld9.fcmetrix.ui.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -51,7 +55,6 @@ fun PlayerRow(
     modifier: Modifier = Modifier,
     isSuplente: Boolean = false,
     onRemove: (() -> Unit)? = null,
-    scrollState: androidx.compose.foundation.ScrollState? = null,
     grlFocusRequester: FocusRequester = remember { FocusRequester() },
     rangoFocusRequester: FocusRequester = remember { FocusRequester() },
     grlImeAction: ImeAction = ImeAction.Next,
@@ -79,12 +82,27 @@ fun PlayerRow(
         isRowFocused = nowFocused
     }
 
+    val rowBorderColor by animateColorAsState(
+        targetValue = if (isRowFocused) MaterialTheme.colorScheme.primary.copy(alpha = 0.35f) 
+                      else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f),
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        label = "player_row_border_$numero"
+    )
+
+    val numberBadgeColor by animateColorAsState(
+        targetValue = if (isRowFocused) MaterialTheme.colorScheme.primary.copy(alpha = 0.18f)
+                      else MaterialTheme.colorScheme.surfaceContainerHigh,
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        label = "number_badge_bg_$numero"
+    )
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .bringIntoViewRequester(bringIntoViewRequester)
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer)
+            .border(1.dp, rowBorderColor, RoundedCornerShape(16.dp))
             .padding(12.dp)
             .semantics(mergeDescendants = true) {
                 contentDescription = playerDesc
@@ -95,7 +113,7 @@ fun PlayerRow(
         Box(
             modifier = Modifier
                 .size(32.dp)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape),
+                .background(numberBadgeColor, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(

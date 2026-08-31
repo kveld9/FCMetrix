@@ -14,9 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsSoccer
-import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,8 +32,7 @@ import com.kveld9.fcmetrix.R
 
 @Composable
 fun Header(
-    dynamicColor: Boolean = false,
-    onDynamicColorChange: (Boolean) -> Unit = {},
+    onOpenSettings: () -> Unit = {},
     onShowTeamManager: () -> Unit = {}
 ) {
     Column(
@@ -77,24 +75,19 @@ fun Header(
                 )
             }
 
-            // Toggle Monet
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                IconButton(
-                    onClick = { onDynamicColorChange(!dynamicColor) },
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
-                        .size(42.dp)
-                ) {
-                    Icon(
-                        imageVector = if (dynamicColor) Icons.Filled.Palette else Icons.Outlined.Palette,
-                        contentDescription = stringResource(R.string.dynamic_color),
-                        tint = if (dynamicColor) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-            } else {
-                Spacer(modifier = Modifier.size(42.dp))
+            IconButton(
+                onClick = onOpenSettings,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
+                    .size(42.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.action_settings),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
         Spacer(Modifier.height(4.dp))

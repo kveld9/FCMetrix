@@ -33,7 +33,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kveld9.fcmetrix.R
-import com.kveld9.fcmetrix.ui.model.PlayerData
+import com.kveld9.fcmetrix.domain.model.PlayerData
 
 @Composable
 fun SectionHeader(title: String, badge: String, modifier: Modifier = Modifier) {
@@ -105,6 +105,11 @@ fun RangoQuickChips(onChange: (String) -> Unit) {
                         .weight(1f)
                         .clip(RoundedCornerShape(16.dp))
                         .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.25f),
+                            shape = RoundedCornerShape(16.dp)
+                        )
                         .clickable(
                             onClick = { onChange(value.toString()) },
                             onClickLabel = chipDesc
@@ -184,7 +189,6 @@ fun TitularesList(
     onRangoChange: (String, String) -> Unit,
     onGrlFocusLost: (String, String) -> Unit,
     onRangoFocusLost: (String, String) -> Unit,
-    scrollState: androidx.compose.foundation.ScrollState,
 ) {
     // Creamos 2 FocusRequester por jugador (GRL y Rango)
     val focusRequesters = remember(titulares.size) {
@@ -208,7 +212,6 @@ fun TitularesList(
                     onRangoChange = { onRangoChange(player.id, it) },
                     onGrlFocusLost = { onGrlFocusLost(player.id, it) },
                     onRangoFocusLost = { onRangoFocusLost(player.id, it) },
-                    scrollState = scrollState,
                     grlFocusRequester = grlFR,
                     rangoFocusRequester = rangoFR,
                     grlImeAction = ImeAction.Next,
@@ -229,7 +232,6 @@ fun SuplentesList(
     onGrlFocusLost: (String, String) -> Unit,
     onRangoFocusLost: (String, String) -> Unit,
     onRemove: (String) -> Unit,
-    scrollState: androidx.compose.foundation.ScrollState,
 ) {
     if (suplentes.isEmpty()) {
         Box(
@@ -272,7 +274,6 @@ fun SuplentesList(
                     onRangoFocusLost = { onRangoFocusLost(player.id, it) },
                     isSuplente = true,
                     onRemove = { onRemove(player.id) },
-                    scrollState = scrollState,
                     grlFocusRequester = grlFR,
                     rangoFocusRequester = rangoFR,
                     grlImeAction = ImeAction.Next,

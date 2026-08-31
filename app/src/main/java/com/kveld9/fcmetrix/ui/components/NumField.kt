@@ -1,9 +1,13 @@
 package com.kveld9.fcmetrix.ui.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 @Composable
 fun NumField(
@@ -50,8 +56,27 @@ fun NumField(
     focusRequester: FocusRequester = remember { FocusRequester() },
     testTag: String = ""
 ) {
-    val themeColor = if (gold) Color(0xFFD4A843) else MaterialTheme.colorScheme.primary
+    val themeColor = if (gold) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
     var isFocused by remember { mutableStateOf(false) }
+    val shakeOffset = remember { Animatable(0f) }
+    val scope = rememberCoroutineScope()
+
+    val triggerShake = {
+        scope.launch {
+            shakeOffset.snapTo(0f)
+            shakeOffset.animateTo(
+                targetValue = 0f,
+                animationSpec = keyframes {
+                    durationMillis = 280
+                    val smooth = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
+                    -6f at 70 using smooth
+                    6f at 140 using smooth
+                    -3f at 210 using smooth
+                    0f at 280
+                }
+            )
+        }
+    }
 
     Column(
         modifier = if (width != null) modifier.width(width) else modifier,
@@ -66,15 +91,20 @@ fun NumField(
         BasicTextField(
             value = value,
             onValueChange = { raw ->
-                val filtered = raw.filter { it.isDigit() }.take(maxDigits)
-                onValueChange(filtered)
+                val digits = raw.filter { it.isDigit() }
+                if (digits.length > maxDigits) {
+                    triggerShake()
+                } else {
+                    onValueChange(digits)
+                }
             },
             textStyle = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 color = if (isFocused) themeColor else MaterialTheme.colorScheme.onSurface,
-                fontFamily = FontFamily.Monospace
+                fontFamily = FontFamily.Monospace,
+                fontFeatureSettings = "tnum"
             ),
             cursorBrush = SolidColor(themeColor),
             singleLine = true,
@@ -85,6 +115,7 @@ fun NumField(
             keyboardActions = keyboardActions,
             modifier = Modifier
                 .fillMaxWidth()
+                .offset(x = shakeOffset.value.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .border(

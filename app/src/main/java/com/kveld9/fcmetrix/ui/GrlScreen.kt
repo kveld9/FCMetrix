@@ -29,7 +29,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kveld9.fcmetrix.R
 import com.kveld9.fcmetrix.domain.GrlCalculator
 import com.kveld9.fcmetrix.ui.components.Actions
-import com.kveld9.fcmetrix.ui.components.Footer
 import com.kveld9.fcmetrix.ui.components.GrlCard
 import com.kveld9.fcmetrix.ui.components.GrlPreviewDialog
 import com.kveld9.fcmetrix.ui.components.Header
@@ -46,9 +45,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun GrlScreen(
     viewModel: GrlViewModel,
-    modifier: Modifier = Modifier,
-    dynamicColor: Boolean = false,
-    onDynamicColorChange: (Boolean) -> Unit = {}
+    onOpenSettings: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val allTeams by viewModel.allTeams.collectAsStateWithLifecycle()
@@ -90,12 +88,11 @@ fun GrlScreen(
                     .widthIn(max = 600.dp)
                     .verticalScroll(scrollState)
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
+                    .padding(bottom = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
             Header(
-                dynamicColor = dynamicColor,
-                onDynamicColorChange = onDynamicColorChange,
+                onOpenSettings = onOpenSettings,
                 onShowTeamManager = { showTeamManager = true }
             )
 
@@ -119,7 +116,6 @@ fun GrlScreen(
                 onRangoChange = viewModel::onRangoChanged,
                 onGrlFocusLost = viewModel::onGrlFocusLost,
                 onRangoFocusLost = viewModel::onRangoFocusLost,
-                scrollState = scrollState
             )
 
             SectionHeader(
@@ -134,15 +130,12 @@ fun GrlScreen(
                 onGrlFocusLost = viewModel::onGrlFocusLost,
                 onRangoFocusLost = viewModel::onRangoFocusLost,
                 onRemove = viewModel::removeSubstitute,
-                scrollState = scrollState,
             )
 
             Actions(
                 onAddSuplente = { viewModel.addSubstitute() },
                 onClearAll = { viewModel.clearAll() },
             )
-
-            Footer()
         }
 
         if (showTeamManager) {
