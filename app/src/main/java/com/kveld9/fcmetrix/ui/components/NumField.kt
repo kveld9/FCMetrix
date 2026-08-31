@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
@@ -115,7 +116,7 @@ fun NumField(
             keyboardActions = keyboardActions,
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(x = shakeOffset.value.dp)
+                .offset { IntOffset(x = shakeOffset.value.dp.roundToPx(), y = 0) }
                 .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .border(
