@@ -20,10 +20,11 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout Codebase (Full History)
+      - name: Checkout Codebase (Full History & Tags)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -48,10 +49,10 @@ jobs:
       - name: Run Android Lint
         run: ./gradlew lintDebug
 
-      - name: Assemble Release APK
-        run: ./gradlew assembleRelease
+      - name: Assemble Release & Debug APKs
+        run: ./gradlew assembleRelease assembleDebug
 
-      - name: Sign & Prepare Release APK
+      - name: Sign & Prepare Artifacts
         env:
           SIGNING_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -59,26 +60,34 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: |
           TAG_NAME="${{ github.ref_name }}"
-          OUTPUT_DIR="app/build/outputs/apk/release"
-          TARGET_APK="FCMetrix-${TAG_NAME}.apk"
+          STAGE="artifacts"
+          mkdir -p "$STAGE"
 
-          RAW_APK=$(find $OUTPUT_DIR -name "*.apk" | head -n 1)
-          if [ -z "$RAW_APK" ]; then
-            echo "ERROR: No se encontró ningún APK en $OUTPUT_DIR"
+          RELEASE_DIR="app/build/outputs/apk/release"
+          DEBUG_DIR="app/build/outputs/apk/debug"
+          TARGET_RELEASE_APK="${STAGE}/FCMetrix-${TAG_NAME}.apk"
+          TARGET_DEBUG_APK="${STAGE}/FCMetrix-${TAG_NAME}-debug.apk"
+
+          RAW_RELEASE_APK=$(find $RELEASE_DIR -name "*.apk" | head -n 1)
+          RAW_DEBUG_APK=$(find $DEBUG_DIR -name "*.apk" | head -n 1)
+
+          if [ -z "$RAW_RELEASE_APK" ]; then
+            echo "ERROR: No se encontró ningún APK en $RELEASE_DIR"
             exit 1
           fi
 
+          # Sign Release APK
           if [ -n "$SIGNING_KEY" ]; then
-            echo "Firmando APK con keystore de producción..."
+            echo "Firmando APK de producción con Keystore oficial..."
             echo "$SIGNING_KEY" | base64 -d > keystore.jks
             $ANDROID_HOME/build-tools/35.0.0/apksigner sign --ks keystore.jks \
               --ks-key-alias "$KEY_ALIAS" \
               --ks-pass "pass:$KEYSTORE_PASSWORD" \
               --key-pass "pass:$KEY_PASSWORD" \
-              --out "$TARGET_APK" "$RAW_APK"
+              --out "$TARGET_RELEASE_APK" "$RAW_RELEASE_APK"
             rm -f keystore.jks
           else
-            echo "AVISO: No se encontraron secrets de producción. Firmando con debug key..."
+            echo "AVISO: Firmando Release APK con debug key para asegurar instalabilidad..."
             mkdir -p ~/.android
             if [ ! -f ~/.android/debug.keystore ]; then
               keytool -genkey -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
@@ -86,60 +95,77 @@ jobs:
             $ANDROID_HOME/build-tools/35.0.0/apksigner sign --ks ~/.android/debug.keystore \
               --ks-pass pass:android \
               --key-pass pass:android \
-              --out "$TARGET_APK" "$RAW_APK"
+              --out "$TARGET_RELEASE_APK" "$RAW_RELEASE_APK"
           fi
 
-          echo "APK_FILE=$TARGET_APK" >> $GITHUB_ENV
+          # Copy Debug APK if available
+          if [ -n "$RAW_DEBUG_APK" ] && [ -f "$RAW_DEBUG_APK" ]; then
+            cp "$RAW_DEBUG_APK" "$TARGET_DEBUG_APK"
+          fi
 
       - name: Generate Multi-Hash Checksums
         run: |
-          APK="${{ env.APK_FILE }}"
-          CHECKSUM_FILE="checksums-${{ github.ref_name }}.txt"
+          TAG_NAME="${{ github.ref_name }}"
+          STAGE="artifacts"
+          cd "$STAGE"
+
+          CHECKSUM_FILE="checksums-${TAG_NAME}.txt"
 
           echo "==================================================" > "$CHECKSUM_FILE"
-          echo " FCMetrix ${{ github.ref_name }} — Integrity Hashes" >> "$CHECKSUM_FILE"
+          echo " FCMetrix ${TAG_NAME} — Integrity Hashes" >> "$CHECKSUM_FILE"
           echo "==================================================" >> "$CHECKSUM_FILE"
           echo "" >> "$CHECKSUM_FILE"
 
           echo "## SHA-256" >> "$CHECKSUM_FILE"
-          sha256sum "$APK" >> "$CHECKSUM_FILE"
+          sha256sum FCMetrix-*.apk >> "$CHECKSUM_FILE"
           echo "" >> "$CHECKSUM_FILE"
 
           echo "## SHA-512" >> "$CHECKSUM_FILE"
-          sha512sum "$APK" >> "$CHECKSUM_FILE"
+          sha512sum FCMetrix-*.apk >> "$CHECKSUM_FILE"
           echo "" >> "$CHECKSUM_FILE"
 
           echo "## MD5" >> "$CHECKSUM_FILE"
-          md5sum "$APK" >> "$CHECKSUM_FILE"
+          md5sum FCMetrix-*.apk >> "$CHECKSUM_FILE"
 
-          sha256sum "$APK" > "${APK}.sha256"
+          # Standard SHA-256 verification files
+          sha256sum FCMetrix-*.apk > SHA256SUMS.txt
+          cd ..
 
-          echo "CHECKSUM_FILE=$CHECKSUM_FILE" >> $GITHUB_ENV
-
-      - name: Generate Detailed Commit Changelog
+      - name: Generate Detailed Changelog & Release Notes
         id: changelog
         run: |
+          TAG_NAME="${{ github.ref_name }}"
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          echo "### 📦 Changelog Detallado de Commits" > changelog.md
-          echo "" >> changelog.md
+          
+          echo "## 📥 Downloads / Descargas" > release_notes.md
+          echo "" >> release_notes.md
+          echo "| Archivo / File | Descripción / Description |" >> release_notes.md
+          echo "| :--- | :--- |" >> release_notes.md
+          echo "| \`FCMetrix-${TAG_NAME}.apk\` | 🚀 **Producción** (Optimizado y Minificado con R8 / ProGuard) |" >> release_notes.md
+          echo "| \`FCMetrix-${TAG_NAME}-debug.apk\` | 🧪 **Debug** (Build de Desarrollo y Testing) |" >> release_notes.md
+          echo "| \`checksums-${TAG_NAME}.txt\` | 🔒 Hashes de Integridad (SHA-256, SHA-512, MD5) |" >> release_notes.md
+          echo "| \`SHA256SUMS.txt\` | 🛡️ Checksums estándar para verificación (\`sha256sum -c\`) |" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "---" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "## 📦 Changelog" >> release_notes.md
+          echo "" >> release_notes.md
 
           if [ -z "$PREV_TAG" ]; then
-            echo "**Primer release o sin tags previos detectados.** Lista completa de commits:" >> changelog.md
-            git log --pretty=format:"* %s ([%h](https://github.com/${{ github.repository }}/commit/%H)) - @%an" >> changelog.md
+            echo "**Primer release o sin tags previos detectados.** Lista completa de commits:" >> release_notes.md
+            git log --pretty=format:"* %s ([%h](https://github.com/${{ github.repository }}/commit/%H)) - @%an" >> release_notes.md
           else
-            echo "Cambios introducidos desde **$PREV_TAG** hasta **${{ github.ref_name }}**:" >> changelog.md
-            echo "" >> changelog.md
-            git log ${PREV_TAG}..HEAD --pretty=format:"* %s ([%h](https://github.com/${{ github.repository }}/commit/%H)) - @%an" >> changelog.md
+            echo "Cambios introducidos desde **$PREV_TAG** hasta **${TAG_NAME}**:" >> release_notes.md
+            echo "" >> release_notes.md
+            git log ${PREV_TAG}..HEAD --pretty=format:"* %s ([%h](https://github.com/${{ github.repository }}/commit/%H)) - @%an" >> release_notes.md
           fi
-          echo "" >> changelog.md
+          echo "" >> release_notes.md
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: "FCMetrix ${{ github.ref_name }}"
-          body_path: changelog.md
-          generate_release_notes: true
-          files: |
-            ${{ env.APK_FILE }}
-            ${{ env.CHECKSUM_FILE }}
-            ${{ env.APK_FILE }}.sha256
+          body_path: release_notes.md
+          generate_release_notes: false
+          files: artifacts/*
+          fail_on_unmatched_files: true
