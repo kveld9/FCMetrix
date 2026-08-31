@@ -143,8 +143,9 @@ jobs:
           echo "| :--- | :--- |" >> release_notes.md
           echo "| \`FCMetrix-${TAG_NAME}.apk\` | 🚀 **Producción** (Optimizado y Minificado con R8 / ProGuard) |" >> release_notes.md
           echo "| \`FCMetrix-${TAG_NAME}-debug.apk\` | 🧪 **Debug** (Build de Desarrollo y Testing) |" >> release_notes.md
-          echo "| \`checksums-${TAG_NAME}.txt\` | 🔒 Hashes de Integridad (SHA-256, SHA-512, MD5) |" >> release_notes.md
-          echo "| \`SHA256SUMS.txt\` | 🛡️ Checksums estándar para verificación (\`sha256sum -c\`) |" >> release_notes.md
+          echo "| \`FCMetrix-${TAG_NAME}.apk.idsig\` | ✍️ **Firma Digital v4** (Esquema de firma *APK Signature Scheme v4*) |" >> release_notes.md
+          echo "| \`checksums-${TAG_NAME}.txt\` | 🔒 **Hashes de Integridad** (Lectura humana: SHA-256, SHA-512, MD5) |" >> release_notes.md
+          echo "| \`SHA256SUMS.txt\` | 🛡️ **Checksums Estándar** (Para verificación con \`sha256sum -c\`) |" >> release_notes.md
           echo "" >> release_notes.md
           echo "---" >> release_notes.md
           echo "" >> release_notes.md
