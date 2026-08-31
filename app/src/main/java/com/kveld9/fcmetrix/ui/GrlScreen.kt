@@ -57,13 +57,18 @@ fun GrlScreen(
     var capturedBitmap by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
     val scope = rememberCoroutineScope()
 
+    val saveSuccessMsg = stringResource(R.string.save_success)
+    val saveErrorMsg = stringResource(R.string.save_error)
+    val clampingGrlFormat = stringResource(R.string.clamping_grl)
+    val clampingRankFormat = stringResource(R.string.clamping_rank)
+
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collectLatest { event ->
             val message = when (event) {
                 is GrlViewModel.UiEvent.ShowGrlClamping -> 
-                    context.resources.getString(R.string.clamping_grl, event.min, event.max)
+                    String.format(clampingGrlFormat, event.min, event.max)
                 is GrlViewModel.UiEvent.ShowRankClamping -> 
-                    context.resources.getString(R.string.clamping_rank, event.min, event.max)
+                    String.format(clampingRankFormat, event.min, event.max)
             }
             snackbarHostState.showSnackbar(message)
         }
@@ -155,8 +160,7 @@ fun GrlScreen(
                     val success = ShareProvider.saveBitmapToGallery(context, bitmap)
                     scope.launch {
                         snackbarHostState.showSnackbar(
-                            if (success) context.getString(R.string.save_success)
-                            else context.getString(R.string.save_error)
+                            if (success) saveSuccessMsg else saveErrorMsg
                         )
                     }
                     capturedBitmap = null

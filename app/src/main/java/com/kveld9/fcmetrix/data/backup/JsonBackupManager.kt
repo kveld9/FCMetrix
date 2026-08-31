@@ -7,8 +7,10 @@ import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.time.Instant
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 import java.util.UUID
 
 enum class DuplicatePolicy {
@@ -64,9 +66,12 @@ class JsonBackupManager {
     }
 
     fun exportToJson(teams: List<TeamEntity>): String {
+        val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
         val backupDto = BackupDto(
             version = 1,
-            exportedAt = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),
+            exportedAt = isoFormat.format(Date()),
             app = "FCMetrix",
             teams = teams.map {
                 TeamBackupDto(

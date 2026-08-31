@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -99,6 +100,9 @@ fun SettingsScreen(
         }
     }
 
+    val exportErrorFormat = stringResource(R.string.toast_backup_export_error)
+    val readErrorFormat = stringResource(R.string.toast_backup_read_error)
+
     // SAF Create Document for Export
     val exportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
@@ -111,7 +115,7 @@ fun SettingsScreen(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    context.getString(R.string.toast_backup_export_error, e.localizedMessage.orEmpty()),
+                    String.format(exportErrorFormat, e.localizedMessage.orEmpty()),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -130,7 +134,7 @@ fun SettingsScreen(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    context.getString(R.string.toast_backup_read_error, e.localizedMessage.orEmpty()),
+                    String.format(readErrorFormat, e.localizedMessage.orEmpty()),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -424,7 +428,7 @@ fun SettingsScreen(
 
                     FilledTonalButton(
                         onClick = {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kveld9/FCMetrix"))
+                            val intent = Intent(Intent.ACTION_VIEW, "https://github.com/kveld9/FCMetrix".toUri())
                             context.startActivity(intent)
                         },
                         shape = MaterialTheme.shapes.medium
