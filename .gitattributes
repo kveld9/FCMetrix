@@ -1,0 +1,5 @@
+gradle/wrapper/gradle-wrapper.jar linguist-vendored=true
+.agents/** linguist-vendored=true
+.github/** linguist-vendored=true
+*.md linguist-documentation=true
+docs/** linguist-documentation=true
